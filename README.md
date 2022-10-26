@@ -12,9 +12,11 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 
 ## Arguments
 
+`data` sequences from a file in FASTA format
+
 `VNTR`
 
-`match_s`matching weight
+`match_s` matching weight
 
 `mismatch_s` mismatching penalty
 
@@ -22,9 +24,9 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 
 `regionEnd`
 
-`baseonly`
+`baseonly` logical. If TRUE, only uses the letters in base alphabet i.e. A,C,G,T.
 
-`VNTRoutput`
+`VNTRoutput` logical. If TRUE, export output to .csv file.
 
 `finder`
 `brief`
@@ -32,4 +34,25 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 
 ## Value
 
+The output of `VNTR` is a matrix, which rows are strains and columns contain the following items:
+*`ID`
+*`r`
+*`match`
+*`mismatch`
+*`indel`
+*`score`
+*`start_pos`
+
 ## Examples
+
+```{Read sequences from a file in FASTA format}
+data <- read.fasta("example.fasta", as.string = T)
+
+length(data)
+```
+
+```{r example}
+out <- VNTR(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s, 
+            regionStart=regionStart, regionEnd=regionEnd,baseonly = baseonly,VNTRoutput=VNTRoutput,finder=finder,brief=brief)
+
+```
