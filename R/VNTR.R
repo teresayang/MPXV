@@ -1,4 +1,3 @@
-
 library(seqinr)
 library(stringr)
 library(Biostrings)
@@ -251,6 +250,43 @@ STR_finder=function(r, L=NULL, brief=T, out_dir="J:/monkeypox/STR_finder/", file
 
 
 
+
+
+#' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
+#' monkeypox virus (MPXV)
+#' 
+#' %% ~~ A concise (1-5 lines) description of what the function does. ~~
+#' 
+#' %% ~~ If necessary, more details than the description above ~~
+#' 
+#' @param data
+#' @param VNTR
+#' @param match_s
+#' @param mismatch_s
+#' @param regionStart
+#' @param regionEnd
+#' @param baseonly
+#' @param VNTRoutput
+#' @return \item{ID}{sequence name} \item{r}{the number of tandem repeats}
+#' \item{match}{the number of matches} \item{mismatch}{the number of
+#' mismatches} \item{indel}{the number of indels} \item{score}{alignment score
+#' for VNTR region} \item{start_pos}{start position of the VNTR region}
+#' @note %% ~~further notes~~
+#' @author %% ~~who you are~~
+#' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
+#' @references %% ~put references to the literature/web site here ~
+#' @examples
+#' 
+#' ##---- Should be DIRECTLY executable !! ----
+#' ##-- ==>  Define data, use random,
+#' ##--	or do  help(data=index)  for the standard data sets.
+#' 
+#' ## The function is currently defined as
+#' function (x)
+#' {
+#'   }
+#' 
+#' @export VNTR
 VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
                  regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F,brief=T){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
