@@ -249,6 +249,8 @@ STR_finder=function(r, L=NULL, brief=T, out_dir="J:/monkeypox/STR_finder/", file
 # data <- read.fasta("G:/Monkeypox/n633/data/MPXV_20220726_n633_combined.fasta",as.string = T)
 # read.fasta("G:/Monkeypox/n633/data/MPXV_20220726_n633_combined.fasta",as.string = T)
 
+# main function
+
 VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
                  regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F,brief=T){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
