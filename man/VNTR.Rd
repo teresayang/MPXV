@@ -1,5 +1,5 @@
-\name{VNTR}
-\alias{calculate_VNTR}
+\name{calculate_VNTR}
+\alias{VNTR}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monkeypox virus (MPXV)
