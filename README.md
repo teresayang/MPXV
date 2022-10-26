@@ -13,15 +13,22 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 ## Arguments
 
 `VNTR`
+
 `match_s`matching weight
+
 `mismatch_s` mismatching penalty
+
 `regionStart`
+
 `regionEnd`
+
 `baseonly`
+
 `VNTRoutput`
 
 `finder`
 `brief`
+
 
 ## Value
 
