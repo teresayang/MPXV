@@ -1,9 +1,4 @@
-gc()
-rm(list = ls())
-library(seqinr)
-library(stringr)
-library(Biostrings)
-library(stringi)
+
 
 ref_fa <- read.fasta("D:/ctyang/Monkeypox/MA001.fasta",as.string = T)
 
@@ -250,6 +245,39 @@ STR_finder=function(r, L=NULL, brief=T, out_dir="J:/monkeypox/STR_finder/", file
 # read.fasta("G:/Monkeypox/n633/data/MPXV_20220726_n633_combined.fasta",as.string = T)
 
 # main function
+#' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monkeypox virus (MPXV)
+#'
+
+#' @param data
+#' @param VNTR
+#' @param match_s
+#' @param mismatch_s
+#' @param regionStart
+#' @param regionEnd
+#' @param baseonly
+#' @param VNTRoutput
+#'
+#'
+#' @return
+#' a dataframe containing the result of VNTR analysis, rows represent strains and columns contain the following components:
+
+#' \item{ID}{sequence name}
+#' \item{r}{the number of tandem repeats}
+#' \item{match}{the number of matches}
+#' \item{mismatch}{the number of mismatches}
+#' \item{indel}{the number of indels}
+#' \item{score}{alignment score for VNTR region}
+#' \item{start_pos}{start position of the VNTR region}
+#'
+#'
+#'
+#'
+#' @export
+#'
+#' @examples
+#'
+#'
+
 
 VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
                  regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F,brief=T){
