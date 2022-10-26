@@ -35,13 +35,13 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 ## Value
 
 The output of `VNTR` is a matrix, which rows are strains and columns contain the following items:
-*`ID`
-*`r`
-*`match`
-*`mismatch`
-*`indel`
-*`score`
-*`start_pos`
+* `ID`
+* `r`
+* `match`
+* `mismatch`
+* `indel`
+* `score`
+* `start_pos`
 
 ## Examples
 
