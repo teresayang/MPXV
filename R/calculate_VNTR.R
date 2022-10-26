@@ -215,7 +215,7 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
   list(paste0("VNTR_nt",paste(nt,STR,"baseonly",baseonly,sep = "_")),out,STR_align)
 }
 
-STR_finder=function(r, L, brief=T, file_name,da=da,da_r=da_r){
+STR_finder=function(r, L, brief=T, file_name){
 
   maxabs=apply(rbind(da_r,r),2,function(x) (max(x)-min(x)))
   miss_points=apply(da_r,1,function(x) (abs(x-r)/maxabs))
@@ -282,7 +282,7 @@ VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
     da_r = da[,nts]
     L <- sapply(1:length(STR), function(x)nchar(STR[x]))
     dir.create("VNTR/finder",showWarnings = F)
-    invisible(sapply(1:nrow(dt), function(x)STR_finder(r = unlist(dt[x,2:5]),L=L,brief=brief,file_name= paste0("VNTR/finder","/",dt$ID[x]),da=da,da_r=da_r)))
+    invisible(sapply(1:nrow(dt), function(x)STR_finder(r = unlist(dt[x,2:5]),L=L,brief=brief,file_name= paste0("VNTR/finder","/",dt$ID[x]))))
   }
 }
 
