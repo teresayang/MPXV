@@ -1,4 +1,4 @@
-\name{VNTR}
+\name{calculate_VNTR}
 \alias{VNTR}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
