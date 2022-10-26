@@ -286,5 +286,3 @@ VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
   }
 }
 
-
-
