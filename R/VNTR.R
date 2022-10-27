@@ -244,8 +244,6 @@ STR_finder=function(r, L=NULL, brief=T, out_dir="J:/monkeypox/STR_finder/", file
   colnames(VNTRoutput)[colnames(VNTRoutput)%in%c("Distance","Distance_L","Distance_entro")] <- c("Distance (PIC)", "Distance (Length)", "Distance (Entropy)")
   write.csv(VNTRoutput,file=paste(out_dir,file_name,".csv",sep=""),row.names = F)
 }
-# data <- read.fasta("G:/Monkeypox/n633/data/MPXV_20220726_n633_combined.fasta",as.string = T)
-# read.fasta("G:/Monkeypox/n633/data/MPXV_20220726_n633_combined.fasta",as.string = T)
 
 
 
@@ -254,11 +252,11 @@ STR_finder=function(r, L=NULL, brief=T, out_dir="J:/monkeypox/STR_finder/", file
 
 #' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV)
-#' 
+#'
 #' %% ~~ A concise (1-5 lines) description of what the function does. ~~
-#' 
+#'
 #' %% ~~ If necessary, more details than the description above ~~
-#' 
+#'
 #' @param data
 #' @param VNTR
 #' @param match_s
@@ -276,16 +274,16 @@ STR_finder=function(r, L=NULL, brief=T, out_dir="J:/monkeypox/STR_finder/", file
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' @references %% ~put references to the literature/web site here ~
 #' @examples
-#' 
+#'
 #' ##---- Should be DIRECTLY executable !! ----
 #' ##-- ==>  Define data, use random,
 #' ##--	or do  help(data=index)  for the standard data sets.
-#' 
+#'
 #' ## The function is currently defined as
 #' function (x)
 #' {
 #'   }
-#' 
+#'
 #' @export VNTR
 VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
                  regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F,brief=T){
