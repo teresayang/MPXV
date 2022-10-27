@@ -28,8 +28,7 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 
 `VNTRoutput` logical. If TRUE, export output to .csv file.
 
-`finder`
-`brief`
+
 
 
 ## Value
