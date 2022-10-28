@@ -219,21 +219,24 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
 
 
 
+
+
 #' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV)
-#'
+#' 
 #' %% ~~ A concise (1-5 lines) description of what the function does. ~~
-#'
+#' 
 #' %% ~~ If necessary, more details than the description above ~~
-#'
-#' @param data
+#' 
+#' @param data sequences from a file in FASTA format
 #' @param VNTR
-#' @param match_s
-#' @param mismatch_s
-#' @param regionStart
+#' @param match_s matching weight
+#' @param mismatch_s mismatching penalty
+#' @param regionStart position
 #' @param regionEnd
-#' @param baseonly
-#' @param VNTRoutput
+#' @param baseonly logical. If TRUE, only uses the letters in base alphabet
+#' i.e. A,C,G,T.
+#' @param VNTRoutput logical. If TRUE, export output to .csv file.
 #' @return \item{ID}{sequence name} \item{r}{the number of tandem repeats}
 #' \item{match}{the number of matches} \item{mismatch}{the number of
 #' mismatches} \item{indel}{the number of indels} \item{score}{alignment score
@@ -243,16 +246,16 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' @references %% ~put references to the literature/web site here ~
 #' @examples
-#'
+#' 
 #' ##---- Should be DIRECTLY executable !! ----
 #' ##-- ==>  Define data, use random,
 #' ##--	or do  help(data=index)  for the standard data sets.
-#'
+#' 
 #' ## The function is currently defined as
 #' function (x)
 #' {
 #'   }
-#'
+#' 
 #' @export VNTR
 VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
                  regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F,brief=T){

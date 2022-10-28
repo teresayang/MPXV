@@ -16,7 +16,7 @@ VNTR(x)
   \item{VNTR}{}
   \item{match_s}{matching weight}
   \item{mismatch_s}{mismatching penalty}
-  \item{regionStart}{}
+  \item{regionStart}{position}
   \item{regionEnd}{}
   \item{baseonly}{logical. If TRUE, only uses the letters in base alphabet i.e. A,C,G,T.}
   \item{VNTRoutput}{logical. If TRUE, export output to .csv file.}
