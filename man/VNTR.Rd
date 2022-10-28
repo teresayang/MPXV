@@ -12,14 +12,14 @@ VNTR(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{data}{}
+  \item{data}{sequences from a file in FASTA format}
   \item{VNTR}{}
-  \item{match_s}{}
-  \item{mismatch_s}{}
+  \item{match_s}{matching weight}
+  \item{mismatch_s}{mismatching penalty}
   \item{regionStart}{}
   \item{regionEnd}{}
-  \item{baseonly}{}
-  \item{VNTRoutput}{}
+  \item{baseonly}{logical. If TRUE, only uses the letters in base alphabet i.e. A,C,G,T.}
+  \item{VNTRoutput}{logical. If TRUE, export output to .csv file.}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
