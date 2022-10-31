@@ -7,18 +7,18 @@ ref_fa <- read.fasta("D:/ctyang/Monkeypox/MA001.fasta",as.string = T)
 
 
 
-VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
+VNTR_sub <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                      regionStart=regionStart, regionEnd=regionEnd,baseonly = baseonly,VNTRoutput=VNTRoutput){
 
 
-  str <- paste(rep(STR,100),collapse = "")
+  vntr_t <- paste(rep(vntr,100),collapse = "")
   match <- rep(NA,length(data))
   mismatch <- rep(NA,length(data))
   score <- rep(NA,length(data))
   r <- rep(NA,length(data))
-  str_ind <- rep(NA,length(data))
+  vntr_ind <- rep(NA,length(data))
   indel <- rep(NA,length(data))
-  STR_align <- list()
+  vntr_align <- list()
   l_score <- rep(NA,length(data))
   r_score <- rep(NA,length(data))
   probe_add_l <- rep(NA,length(data))
@@ -29,19 +29,19 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
   ATCG_p <- rep(NA,length(data))
 
   s_fa <- DNAString(as.character(substr(ref_fa,regionStart-150,regionEnd+150)))
-  s2 <- DNAString(str)
+  s2 <- DNAString(vntr_t)
   mat <- nucleotideSubstitutionMatrix(match = match_s, mismatch = mismatch_s, baseOnly = F)
   mat[!mat%in%c(match_s,mismatch_s)] <- match_s
   reflAlign <- pairwiseAlignment(s_fa, s2, substitutionMatrix = mat,gapOpening = -mismatch_s, gapExtension = 2,type="local")
 
-  str_pos_ref <- str_locate_all(gsub("-","",reflAlign@subject),STR)[[1]]
+  vntr_pos_ref <- str_locate_all(gsub("-","",reflAlign@subject),vntr)[[1]]
 
   gap_l <- rep(0,nchar(reflAlign@subject))
   gap_l[str_locate_all(reflAlign@subject,"-")[[1]][,1]] <- 1
   gap_l<- cumsum(gap_l)
   #
-  a <- str_pos_ref[1,1]+gap_l[str_pos_ref[1,1]]
-  b <- str_pos_ref[nrow(str_pos_ref),2]+gap_l[str_pos_ref[nrow(str_pos_ref),2]]
+  a <- vntr_pos_ref[1,1]+gap_l[vntr_pos_ref[1,1]]
+  b <- vntr_pos_ref[nrow(vntr_pos_ref),2]+gap_l[vntr_pos_ref[nrow(vntr_pos_ref),2]]
   b <- b-str_count(substr(reflAlign@pattern,a,b),"-")
 
   nt <- str_locate_all(toupper(ref_fa),gsub("-","",as.character(reflAlign@pattern)))[[1]][1]
@@ -113,26 +113,26 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
     }
 
 
-    if(nchar(txt)!=0&nchar(seq_txt)>=nchar(STR)){
+    if(nchar(txt)!=0&nchar(seq_txt)>=nchar(vntr)){
 
-      if(nchar(STR)==1){
-        STR_align[[i]] <- txt
+      if(nchar(vntr)==1){
+        vntr_align[[i]] <- txt
         start_pos[i] <- Align_l@subject@range@start+Align_l@subject@range@width-1+a
 
         s1_1 <- txt
-        s2_1 <- rep(STR,nchar(txt))
+        s2_1 <- rep(vntr,nchar(txt))
         TF <- table(factor(strsplit(s1_1,"")[[1]]==strsplit(s2_1,"")[[1]], levels = c("TRUE","FALSE")))
         match[i] <- TF["TRUE"]
         mismatch[i] <- TF["FALSE"]
         indel[i] <- 0
-        r[i] <- str_count(txt,STR)
+        r[i] <- str_count(txt,vntr)
 
         r_start[i] <- 1
         r_end[i] <- nchar(txt)
 
       }else{
         s1 <- DNAString(txt)
-        s2 <- DNAString(str)
+        s2 <- DNAString(vntr_t)
         mat <- nucleotideSubstitutionMatrix(match = match_s, mismatch = mismatch_s, baseOnly = F)
         mat[!mat%in%c(match_s,mismatch_s)] <- ifelse(baseonly==T,mismatch_s,match_s)
 
@@ -144,42 +144,42 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
         s1_1 <- globalAlign@pattern
         s2_1 <- globalAlign@subject
 
-        str_pos <- str_locate_all(gsub("-","",s2_1),STR)[[1]]
+        vntr_pos <- str_locate_all(gsub("-","",s2_1),vntr)[[1]]
 
 
-        if(nrow(str_pos)!=0){
+        if(nrow(vntr_pos)!=0){
           gap_l <- rep(0,nchar(s2_1))
           gap_l[str_locate_all(s2_1,"-")[[1]][,1]] <- 1
           gap_l<- cumsum(gap_l)
 
-          a <- str_pos[1,1]+gap_l[str_pos[1,1]]
-          b <- str_pos[nrow(str_pos),2]+gap_l[str_pos[nrow(str_pos),2]]
+          a <- vntr_pos[1,1]+gap_l[vntr_pos[1,1]]
+          b <- vntr_pos[nrow(vntr_pos),2]+gap_l[vntr_pos[nrow(vntr_pos),2]]
 
-          ATCG_p[i] <- paste(sapply(1:nrow(str_pos), function(x) str_count(substr(s1_1,str_pos[x,1]+gap_l[str_pos[x,1]],str_pos[x,2]+gap_l[str_pos[x,2]]),"A|T|C|G|-"))-sapply(1:nrow(str_pos), function(x) str_count(substr(s2_1,str_pos[x,1]+gap_l[str_pos[x,1]],str_pos[x,2]+gap_l[str_pos[x,2]]),"-")),collapse = "-")
+          ATCG_p[i] <- paste(sapply(1:nrow(vntr_pos), function(x) str_count(substr(s1_1,vntr_pos[x,1]+gap_l[vntr_pos[x,1]],vntr_pos[x,2]+gap_l[vntr_pos[x,2]]),"A|T|C|G|-"))-sapply(1:nrow(vntr_pos), function(x) str_count(substr(s2_1,vntr_pos[x,1]+gap_l[vntr_pos[x,1]],vntr_pos[x,2]+gap_l[vntr_pos[x,2]]),"-")),collapse = "-")
 
           s1_1 <- substr(s1_1,a,b)
           s2_1 <- substr(s2_1,a,b)
 
 
 
-          STR_align[[i]] <- txt
+          vntr_align[[i]] <- txt
           start_pos[i] <- Align_l@subject@range@start+Align_l@subject@range@width-1+a
           TF <- table(factor(strsplit(s1_1,"")[[1]]==strsplit(s2_1,"")[[1]], levels = c("TRUE","FALSE")))
-          str_loc <- str_locate_all(gsub("-","",as.character(globalAlign@subject)),STR)[[1]]
+          vntr_loc <- str_locate_all(gsub("-","",as.character(globalAlign@subject)),vntr)[[1]]
           r_start[i] <- str_locate(txt,gsub("-","",s1_1))[1]
           r_end[i] <- str_locate(txt,gsub("-","",s1_1))[2]
 
           match[i] <- TF["TRUE"]
           mismatch[i] <- TF["FALSE"]
           indel[i] <- str_count(s2_1,"-")+str_count(s1_1,"-")
-          r[i]<-nrow(str_loc)
+          r[i]<-nrow(vntr_loc)
 
 
 
         }else{
 
           r[i]<-0
-          STR_align[[i]] <- ""
+          vntr_align[[i]] <- ""
         }
 
       }
@@ -188,17 +188,17 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
 
     }else{
       r[i]<-0
-      STR_align[[i]] <- ""
+      vntr_align[[i]] <- ""
     }
 
 
   }
 
 
-  names(STR_align) <- names(data)
+  names(vntr_align) <- names(data)
 
   out <- data.frame(ID=names(data),r=r,match=match,mismatch=mismatch,
-                    indel=indel,score=match*match_s+mismatch*mismatch_s,STR=str_ind,
+                    indel=indel,score=match*match_s+mismatch*mismatch_s,vntr=vntr_ind,
                     l_score=l_score,r_score=r_score,
                     probe_add_l=probe_add_l,probe_add_r=probe_add_r,start_pos=start_pos,
                     r_start=r_start,r_end=r_end,ATCG_p=ATCG_p)
@@ -206,12 +206,18 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
 
   if(VNTRoutput==T){
     dir.create("VNTR",showWarnings = F)
-    write.csv(out,paste0("VNTR/VNTR_nt",paste(nt,STR,"baseonly",baseonly,sep = "_"),".csv"),row.names = F)
-    seqinr::write.fasta(STR_align,names(STR_align), paste0("VNTR/VNTR_nt",paste(nt,STR,"baseonly",baseonly,sep = "_"),".fas"))
+    write.csv(out,paste0("VNTR/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".csv"),row.names = F)
+    seqinr::write.fasta(vntr_align,names(vntr_align), paste0("VNTR/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".fas"))
   }
 
-  list(paste0("VNTR_nt",paste(nt,STR,"baseonly",baseonly,sep = "_")),out,STR_align)
+  list(paste0("VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_")),out,vntr_align)
 }
+
+
+
+
+
+
 
 
 
@@ -225,14 +231,14 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
 
 #' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV)
-#'
-#' The funciton \code{VNTR} computes the copy of the variable number tandem
-#' repeats.
-#'
+#' 
+#' The funciton \code{VNTR.Genotype} computes the copy of the variable number
+#' tandem repeats.
+#' 
 #' %% ~~ If necessary, more details than the description above ~~
-#'
+#' 
 #' @param data sequences from a file in FASTA format
-#' @param VNTR variable number tandem repeat
+#' @param vntr variable number tandem repeat
 #' @param match_s matching weight
 #' @param mismatch_s mismatching penalty
 #' @param regionStart start position of VNTR region
@@ -240,7 +246,7 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
 #' @param baseonly logical. If TRUE, only uses the letters in base alphabet
 #' i.e. A,C,G,T.
 #' @param VNTRoutput logical. If TRUE, export output to .csv file.
-#' @param finder logical. If TRUE,
+#' @param finder logical. If TRUE, call function \code{\link{STR_finder}}.
 #' @return \item{ID}{name of sequence} \item{r}{the copy of tandem repeats}
 #' \item{match}{the number of matches} \item{mismatch}{the number of
 #' mismatches} \item{indel}{the number of indels} \item{score}{alignment score
@@ -250,28 +256,36 @@ VNTR_sub <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
 #' @author %% ~~who you are~~
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' @references %% ~put references to the literature/web site here ~
-#'
+#' 
 #' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 #' manipulation of biological strings}.  R package version 2.64.0,
 #' \href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples
-#'
-#' ##---- Should be DIRECTLY executable !! ----
-#' ##-- ==>  Define data, use random,
-#' ##--	or do  help(data=index)  for the standard data sets.
-#'
-#' ## The function is currently defined as
-#' function (x)
-#' {
-#'   }
-#'
-#' @export VNTR
-VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
-                 regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
+#' 
+#' ## load example
+#' data(example)
+#' 
+#' vntr <- c("T","TATGATGGA","AT","ATATACATT")
+#' regionStart <- c(132436,150542,173240,178413)
+#' regionEnd <- c(133216,151501,173320,179244)
+#' 
+#' baseonly = T
+#' match_s <- 2
+#' mismatch_s <- -5
+#' VNTRoutput = F
+#' finder = F
+#' 
+#' 
+#' out <- VNTR.Genotype(data=MPXVseq, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
+#'             regionStart=regionStart, regionEnd=regionEnd,baseonly = baseonly,VNTRoutput=VNTRoutput,finder=finder)
+#' 
+#' 
+VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
+                          regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
     stop("regionStart or regionEnd should be numeric.")
   }
-  if(!all.equal(length(STR),length(regionStart),length(regionEnd ))){
+  if(!all.equal(length(vntr),length(regionStart),length(regionEnd ))){
     stop("")
   }
   if(sum(is.na(as.numeric(c(match_s,mismatch_s))))!=0){
@@ -285,7 +299,7 @@ VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
     stop("VNTRoutput should be TRUE or FALSE.")
   }
   out <- list()
-  invisible(sapply(1:length(STR), function(x)out[[x]] <<-VNTR_sub(data, STR=STR[x], match_s=match_s, mismatch_s=mismatch_s,regionStart=regionStart[x], regionEnd=regionEnd[x],baseonly = baseonly,VNTRoutput=VNTRoutput)))
+  invisible(sapply(1:length(vntr), function(x) out[[x]] <<-VNTR_sub(data, vntr=vntr[x], match_s=match_s, mismatch_s=mismatch_s,regionStart=regionStart[x], regionEnd=regionEnd[x],baseonly = baseonly,VNTRoutput=VNTRoutput)))
   names(out) <- sapply(1:length(out), function(x)out[[x]][[1]])
 
 
@@ -298,9 +312,10 @@ VNTR <- function(data, STR=STR, match_s=match_s, mismatch_s=mismatch_s,
     load("G:/Monkeypox/VNTR_program/VNTR_database_n1407.RData")
     nts = colnames(dt)[-1]
     da_r = da[,nts]
-    L <- sapply(1:length(STR), function(x)nchar(STR[x]))
+    L <- sapply(1:length(vntr), function(x)nchar(vntr[x]))
     dir.create("VNTR/finder",showWarnings = F)
     invisible(sapply(1:nrow(dt), function(x)STR_finder(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/finder","/",dt$ID[x]))))
   }
+  out
 }
 

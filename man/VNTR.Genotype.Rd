@@ -8,7 +8,7 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 The funciton \code{VNTR.Genotype} computes the copy of the variable number tandem repeats.
 }
 \usage{
-VNTR.Genotype(data, STR=STR,
+VNTR.Genotype(data, vntr=vntr,
       match_s=match_s,
       mismatch_s=mismatch_s,
       regionStart=regionStart,
@@ -20,7 +20,7 @@ VNTR.Genotype(data, STR=STR,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{sequences from a file in FASTA format}
-  \item{VNTR}{variable number tandem repeat}
+  \item{vntr}{variable number tandem repeat}
   \item{match_s}{matching weight}
   \item{mismatch_s}{mismatching penalty}
   \item{regionStart}{start position of VNTR region}
@@ -65,7 +65,7 @@ VNTR.Genotype(data, STR=STR,
 ## load example
 data(example)
 
-VNTR <- c("T","TATGATGGA","AT","ATATACATT")
+vntr <- c("T","TATGATGGA","AT","ATATACATT")
 regionStart <- c(132436,150542,173240,178413)
 regionEnd <- c(133216,151501,173320,179244)
 
@@ -76,7 +76,7 @@ VNTRoutput = F
 finder = F
 
 
-out <- VNTR(data, VNTR=VNTR, match_s=match_s, mismatch_s=mismatch_s,
+out <- VNTR.Genotype(data=MPXVseq, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
             regionStart=regionStart, regionEnd=regionEnd,baseonly = baseonly,VNTRoutput=VNTRoutput,finder=finder)
 
 }
