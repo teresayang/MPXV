@@ -7,8 +7,10 @@ ref_fa <- read.fasta("D:/ctyang/Monkeypox/MA001.fasta",as.string = T)
 
 
 
-VNTR_sub <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
-                     regionStart=regionStart, regionEnd=regionEnd,baseonly = baseonly,VNTRoutput=VNTRoutput){
+VNTR_sub <- function(data, vntr=vntr,
+                     regionStart=regionStart, regionEnd=regionEnd,
+                     match_s=match_s, mismatch_s=mismatch_s,
+                     baseonly = baseonly,VNTRoutput=VNTRoutput){
 
 
   vntr_t <- paste(rep(vntr,100),collapse = "")
@@ -198,10 +200,8 @@ VNTR_sub <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
   names(vntr_align) <- names(data)
 
   out <- data.frame(ID=names(data),r=r,match=match,mismatch=mismatch,
-                    indel=indel,score=match*match_s+mismatch*mismatch_s,vntr=vntr_ind,
-                    l_score=l_score,r_score=r_score,
-                    probe_add_l=probe_add_l,probe_add_r=probe_add_r,start_pos=start_pos,
-                    r_start=r_start,r_end=r_end,ATCG_p=ATCG_p)
+                    indel=indel,score=match*match_s+mismatch*mismatch_s,
+                    start_pos=start_pos)
   out$start_pos[out$r==0] <- NA
 
   if(VNTRoutput==T){
@@ -229,14 +229,18 @@ VNTR_sub <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
 
 
 
+
+
+
+
 #' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV)
-#' 
+#'
 #' The funciton \code{VNTR.Genotype} computes the copy of the variable number
 #' tandem repeats.
-#' 
+#'
 #' %% ~~ If necessary, more details than the description above ~~
-#' 
+#'
 #' @param data sequences from a file in FASTA format
 #' @param vntr variable number tandem repeat
 #' @param match_s matching weight
@@ -256,30 +260,36 @@ VNTR_sub <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
 #' @author %% ~~who you are~~
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' @references %% ~put references to the literature/web site here ~
-#' 
+#'
 #' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 #' manipulation of biological strings}.  R package version 2.64.0,
 #' \href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples
-#' 
+#'
 #' ## load example
 #' data(example)
-#' 
+#'
+#'
+#' ## VNTR
 #' vntr <- c("T","TATGATGGA","AT","ATATACATT")
 #' regionStart <- c(132436,150542,173240,178413)
 #' regionEnd <- c(133216,151501,173320,179244)
-#' 
+#'
+#' ## parameter settings
 #' baseonly = T
-#' match_s <- 2
-#' mismatch_s <- -5
+#' match_s = 2
+#' mismatch_s = -5
 #' VNTRoutput = F
 #' finder = F
-#' 
-#' 
-#' out <- VNTR.Genotype(data=MPXVseq, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
-#'             regionStart=regionStart, regionEnd=regionEnd,baseonly = baseonly,VNTRoutput=VNTRoutput,finder=finder)
-#' 
-#' 
+#'
+#' ## computes the copy of the variable number tandem repeats
+#' out <- VNTR.Genotype(data = MPXVseq, vntr = vntr,
+#'                      regionStart = regionStart, regionEnd = regionEnd,
+#'                      match_s = match_s, mismatch_s=mismatch_s,
+#'                      baseonly = baseonly,VNTRoutput = VNTRoutput,
+#'                      finder = finder)
+#'
+#'
 VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                           regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
@@ -299,7 +309,7 @@ VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_
     stop("VNTRoutput should be TRUE or FALSE.")
   }
   out <- list()
-  invisible(sapply(1:length(vntr), function(x) out[[x]] <<-VNTR_sub(data, vntr=vntr[x], match_s=match_s, mismatch_s=mismatch_s,regionStart=regionStart[x], regionEnd=regionEnd[x],baseonly = baseonly,VNTRoutput=VNTRoutput)))
+  invisible(sapply(1:length(vntr), function(x) out[[x]] <<-VNTR_sub(data, vntr=vntr[x],regionStart=regionStart[x], regionEnd=regionEnd[x], match_s=match_s, mismatch_s=mismatch_s,baseonly = baseonly,VNTRoutput=VNTRoutput)))
   names(out) <- sapply(1:length(out), function(x)out[[x]][[1]])
 
 
