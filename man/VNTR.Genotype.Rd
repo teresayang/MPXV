@@ -8,14 +8,13 @@ Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monk
 The funciton \code{VNTR.Genotype} computes the copy of the variable number tandem repeats.
 }
 \usage{
-VNTR.Genotype(data, vntr=vntr,
-      match_s=match_s,
-      mismatch_s=mismatch_s,
-      regionStart=regionStart,
-      regionEnd=regionEnd,
-      baseonly = T,
-      VNTRoutput=F,
-      finder=F)
+VNTR.Genotype(data, vntr,
+      regionStart, regionEnd,
+      match_s = match_s,
+      mismatch_s = mismatch_s,
+      baseonly = True,
+      VNTRoutput = False,
+      finder = False)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -65,19 +64,25 @@ VNTR.Genotype(data, vntr=vntr,
 ## load example
 data(example)
 
+
+## VNTR
 vntr <- c("T","TATGATGGA","AT","ATATACATT")
 regionStart <- c(132436,150542,173240,178413)
 regionEnd <- c(133216,151501,173320,179244)
 
+## parameter settings
 baseonly = T
-match_s <- 2
-mismatch_s <- -5
+match_s = 2
+mismatch_s = -5
 VNTRoutput = F
 finder = F
 
-
-out <- VNTR.Genotype(data=MPXVseq, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
-            regionStart=regionStart, regionEnd=regionEnd,baseonly = baseonly,VNTRoutput=VNTRoutput,finder=finder)
+## computes the copy of the variable number tandem repeats
+out <- VNTR.Genotype(data = MPXVseq, vntr = vntr,
+                     regionStart = regionStart, regionEnd = regionEnd,
+                     match_s = match_s, mismatch_s=mismatch_s,
+                     baseonly = baseonly,VNTRoutput = VNTRoutput,
+                     finder = finder)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
