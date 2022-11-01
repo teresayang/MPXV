@@ -19,7 +19,7 @@ VNTR.Genotype(data, vntr,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{sequences from a file in FASTA format}
-  \item{vntr}{variable number tandem repeat}
+  \item{vntr}{variable number tandem repeat (VNTR)}
   \item{match_s}{matching weight}
   \item{mismatch_s}{mismatching penalty}
   \item{regionStart}{start position of VNTR region}
