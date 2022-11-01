@@ -307,8 +307,15 @@ VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_
     da_r = da[,nts]
     L <- sapply(1:length(vntr), function(x)nchar(vntr[x]))
     dir.create("VNTR/finder",showWarnings = F)
-    invisible(sapply(1:nrow(dt), function(x)STR_finder(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/finder","/",dt$ID[x]))))
+    tryCatch(
+      {
+        invisible(sapply(1:nrow(dt), function(x)STR_finder(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/finder","/",dt$ID[x]))))
+      },
+      error=function(error_message) {
+        message(error_message)
+
+      }
+    )
   }
   out
 }
-
