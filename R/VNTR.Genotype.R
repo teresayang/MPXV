@@ -1,7 +1,4 @@
-library(seqinr)
-library(stringr)
-library(Biostrings)
-library(stringi)
+
 
 ref_fa <- read.fasta("D:/ctyang/Monkeypox/MA001.fasta",as.string = T)
 
