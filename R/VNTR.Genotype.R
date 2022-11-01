@@ -269,7 +269,7 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #'
 #' @export VNTR.Genotype
 #' @import Biostrings
-#' @importFrom stringr str_locate_all str_count
+#' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
 
 
