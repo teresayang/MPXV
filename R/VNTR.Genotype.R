@@ -1,7 +1,3 @@
-ref_fa <- read.fasta("data/MA001.fasta",as.string = T)
-
-
-
 VNTR_sub <- function(data, vntr=vntr,
                      regionStart=regionStart, regionEnd=regionEnd,
                      match_s=match_s, mismatch_s=mismatch_s,
@@ -207,35 +203,18 @@ VNTR_sub <- function(data, vntr=vntr,
 
   list(paste0("VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_")),out,vntr_align)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ref_fa <- read.fasta("data/MA001.fasta",as.string = T)
 
 
 
 #' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV)
-#'
+#' 
 #' The funciton \code{VNTR.Genotype} computes the copy of the variable number
 #' tandem repeats.
-#'
+#' 
 #' %% ~~ If necessary, more details than the description above ~~
-#'
+#' 
 #' @param data sequences from a file in FASTA format
 #' @param vntr variable number tandem repeat
 #' @param match_s matching weight
@@ -255,36 +234,36 @@ VNTR_sub <- function(data, vntr=vntr,
 #' @author %% ~~who you are~~
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' @references %% ~put references to the literature/web site here ~
-#'
+#' 
 #' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 #' manipulation of biological strings}.  R package version 2.64.0,
 #' \href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples
-#'
+#' 
 #' ## load example
 #' data(example)
-#'
-#'
+#' 
+#' 
 #' ## VNTR
 #' vntr <- c("T","TATGATGGA","AT","ATATACATT")
 #' regionStart <- c(132436,150542,173240,178413)
 #' regionEnd <- c(133216,151501,173320,179244)
-#'
+#' 
 #' ## parameter settings
 #' baseonly = T
 #' match_s = 2
 #' mismatch_s = -5
 #' VNTRoutput = F
 #' finder = F
-#'
+#' 
 #' ## computes the copy of the variable number tandem repeats
 #' out <- VNTR.Genotype(data = MPXVseq, vntr = vntr,
 #'                      regionStart = regionStart, regionEnd = regionEnd,
 #'                      match_s = match_s, mismatch_s=mismatch_s,
 #'                      baseonly = baseonly,VNTRoutput = VNTRoutput,
 #'                      finder = finder)
-#'
-#'
+#' 
+#' 
 VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                           regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
