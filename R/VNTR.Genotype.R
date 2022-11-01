@@ -268,7 +268,7 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #'
 #'
 #' @export VNTR.Genotype
-#' @importFrom Biostrings DNAString nucleotideSubstitutionMatrix pairwiseAlignment
+#' @import Biostrings
 #' @importFrom stringr str_locate_all
 #' @importFrom seqinr read.fasta
 
