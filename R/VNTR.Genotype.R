@@ -1,6 +1,4 @@
-
-
-ref_fa <- read.fasta("D:/ctyang/Monkeypox/MA001.fasta",as.string = T)
+ref_fa <- read.fasta("data/MA001.fasta",as.string = T)
 
 
 
