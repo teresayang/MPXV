@@ -210,6 +210,8 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 
 
 
+
+
 #' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV)
 #'
@@ -219,7 +221,7 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' %% ~~ If necessary, more details than the description above ~~
 #'
 #' @param data sequences from a file in FASTA format
-#' @param vntr variable number tandem repeat (VNTR)
+#' @param vntr sequence of the repetitive unit
 #' @param match_s matching weight
 #' @param mismatch_s mismatching penalty
 #' @param regionStart start position of VNTR region
@@ -271,7 +273,6 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
-
 
 VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                           regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
