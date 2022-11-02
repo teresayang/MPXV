@@ -24,7 +24,7 @@ VNTR.Genotype(data, vntr,
   \item{mismatch_s}{mismatching penalty}
   \item{regionStart}{start position of VNTR region}
   \item{regionEnd}{end position of VNTR region}
-  \item{baseonly}{logical. If TRUE, only uses the letters in base alphabet i.e. A,C,G,T.}
+  \item{baseonly}{logical. If TRUE, only uses the letters in base alphabet i.e. A,C,G,T. If FALSE, consider degnerate code in the analysis.}
   \item{VNTRoutput}{logical. If TRUE, export output to .csv file.}
   \item{finder}{logical. If TRUE, call function \code{\link{STR_finder}}. }
 }

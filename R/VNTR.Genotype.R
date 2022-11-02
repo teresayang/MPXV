@@ -210,8 +210,6 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 
 
 
-
-
 #' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV)
 #'
@@ -227,7 +225,7 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' @param regionStart start position of VNTR region
 #' @param regionEnd end position of VNTR region
 #' @param baseonly logical. If TRUE, only uses the letters in base alphabet
-#' i.e. A,C,G,T.
+#' i.e. A,C,G,T. If FALSE, consider degnerate code in the analysis.
 #' @param VNTRoutput logical. If TRUE, export output to .csv file.
 #' @param finder logical. If TRUE, call function \code{\link{STR_finder}}.
 #' @return \item{ID}{name of sequence} \item{r}{the copy of tandem repeats}
@@ -273,7 +271,6 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
-
 VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                           regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
