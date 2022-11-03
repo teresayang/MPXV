@@ -2,7 +2,7 @@ r=c(27,7,24,16) #TAIWAN 1
 r=c(20,7,30,16) #TAIWAN 2
 r=c(19,7,24,15) #巴西
 
-STR_finder=function(r, L=NULL, out_dir="J:/monkeypox/STR_finder/", file_name="matching_output_n_1798"){ 
+VNTRtracker=function(r, L=NULL, out_dir="/", file_name="Tracking_output"){ 
 	if(is.null(L)){L=c(1,9,2,9)}#nt 133095 150554 173287 179074
 	da=read.csv("J:/monkeypox/VNTR_listbaseonly_TRUE.csv",check.names=F)
 	information=read.csv("J:/monkeypox/STR/Metadata_forCSS_n1798.csv",check.names=F)
