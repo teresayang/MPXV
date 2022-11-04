@@ -273,7 +273,7 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' @importFrom seqinr read.fasta
 #'
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
-                       regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
+                       regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,tracker=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
     stop("regionStart or regionEnd should be numeric.")
   }
@@ -305,10 +305,10 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     nts = colnames(dt)[-1]
     da_r = da[,nts]
     L <- sapply(1:length(vntr), function(x)nchar(vntr[x]))
-    dir.create("VNTR/finder",showWarnings = F)
+    dir.create("VNTR/tracker",showWarnings = F)
     tryCatch(
       {
-        invisible(sapply(1:nrow(dt), function(x)STRtracker(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/finder","/",dt$ID[x]))))
+        invisible(sapply(1:nrow(dt), function(x)STRtracker(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/tracker","/",dt$ID[x]))))
       },
       error=function(error_message) {
         message(error_message)
