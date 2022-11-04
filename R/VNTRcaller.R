@@ -206,40 +206,6 @@ VNTR_sub <- function(data, vntr=vntr,
 ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -334,7 +300,7 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
   if(VNTRoutput==T){
     write.csv(dt,paste0("VNTR/VNTR_list",paste("baseonly",baseonly,sep = "_"),".csv"),row.names = F)
   }
-  if(finder==T){
+  if(tracker==T){
     load("G:/Monkeypox/VNTR_program/VNTR_database_n1407.RData")
     nts = colnames(dt)[-1]
     da_r = da[,nts]
@@ -342,7 +308,7 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     dir.create("VNTR/finder",showWarnings = F)
     tryCatch(
       {
-        invisible(sapply(1:nrow(dt), function(x)STR_finder(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/finder","/",dt$ID[x]))))
+        invisible(sapply(1:nrow(dt), function(x)STRtracker(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/finder","/",dt$ID[x]))))
       },
       error=function(error_message) {
         message(error_message)
