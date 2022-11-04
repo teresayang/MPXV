@@ -211,37 +211,70 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 
 
 
-#' Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of
-#' monkeypox virus (MPXV)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
+#' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
-#' The funciton \code{VNTR.Genotype} computes the copy of the variable number
-#' tandem repeats.
+#' The function \code{VNTRcaller} estimates the copy numbers of VNTRs. %% ~~ A
+#' concise (1-5 lines) description of what the function does. ~~
 #'
 #' %% ~~ If necessary, more details than the description above ~~
 #'
-#' @param data sequences from a file in FASTA format
+#' @param data MPXV sequences from a file in FASTA format
 #' @param vntr sequence of the repetitive unit
 #' @param match_s matching weight
 #' @param mismatch_s mismatching penalty
-#' @param regionStart start position of VNTR region
-#' @param regionEnd end position of VNTR region
-#' @param baseonly logical. If TRUE, only uses the letters in base alphabet
-#' i.e. A,C,G,T. If FALSE, consider degenerate code in the analysis.
-#' @param VNTRoutput logical. If TRUE, export output to .csv file.
-#' @param finder logical. If TRUE, call function \code{\link{STR_finder}}.
-#' @return \item{ID}{name of sequence} \item{r}{the copy of tandem repeats}
-#' \item{match}{the number of matches} \item{mismatch}{the number of
-#' mismatches} \item{indel}{the number of indels} \item{score}{alignment score
-#' of VNTR region for each query strain} \item{start_pos}{start position of the
-#' VNTR region for each query strain}
+#' @param regionStart starting position of a VNTR region
+#' @param regionEnd ending position of a VNTR region
+#' @param baseonly logical. If TRUE, only the letters of the nucleotide bases
+#' (i.e. A,C,G,T) are considered. If FALSE, the degenerate codes are also
+#' considered.
+#' @param VNTRoutput logical. If TRUE, the output is written to .csv files.
+#' @param tracker logical. If TRUE, call function \code{\link{VNTRtracker}}.
+#' @return \item{ID}{name of MPXV sequences} \item{r}{copy of tandem repeats}
+#' \item{match}{number of matches} \item{mismatch}{number of mismatches}
+#' \item{indel}{number of insertions and deletions (indels)}
+#' \item{score}{alignment score of a VNTR region for a query strain}
+#' \item{start_pos}{starting position of the VNTR region for a query strain} %%
+#' ...
 #' @note %% ~~further notes~~
 #' @author %% ~~who you are~~
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
-#' @references %% ~put references to the literature/web site here ~
+#' @references %% ~put references to the literature/web site here ~ Yang, H.-C.
+#' et al (2022) Monkeypox genome contains variable number tandem repeats
+#' enabling accurate virus tracking.
 #'
 #' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
-#' manipulation of biological strings}.  R package version 2.64.0,
-#' \href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
+#' manipulation of biological strings}.  R package version 2.64.0.
+#' %%\href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples
 #'
 #' ## load example
@@ -258,22 +291,23 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' match_s = 2
 #' mismatch_s = -5
 #' VNTRoutput = F
-#' finder = F
+#' tracker = F
 #'
 #' ## computes the copy of the variable number tandem repeats
-#' out <- VNTR.Genotype(data = MPXVseq, vntr = vntr,
+#' out <- VNTRcaller(data = MPXVseq, vntr = vntr,
 #'                      regionStart = regionStart, regionEnd = regionEnd,
 #'                      match_s = match_s, mismatch_s=mismatch_s,
 #'                      baseonly = baseonly,VNTRoutput = VNTRoutput,
-#'                      finder = finder)
+#'                      tracker = tracker)
 #'
 #'
-#' @export VNTR.Genotype
+#' @export VNTRcaller
 #' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
-VNTR.Genotype <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
-                          regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
+#'
+VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
+                       regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,finder=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
     stop("regionStart or regionEnd should be numeric.")
   }
