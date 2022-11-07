@@ -86,11 +86,11 @@ regionStart <- c(132436,150542,173240,178413)
 regionEnd <- c(133216,151501,173320,179244)
 
 ## parameter settings
-baseonly = T
+baseonly = TRUE
 match_s = 2
 mismatch_s = -5
-VNTRoutput = F
-tracker = F
+VNTRoutput = FALSE
+tracker = FALSE
 
 ## computes the copy of the variable number tandem repeats
 out <- VNTRcaller(data = MPXVseq, vntr = vntr,
