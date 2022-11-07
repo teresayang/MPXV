@@ -210,6 +210,18 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -304,14 +316,20 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     write.csv(dt,paste0("VNTR/VNTR_list",paste("baseonly",baseonly,sep = "_"),".csv"),row.names = F)
   }
   if(tracker==T){
-    load("G:/Monkeypox/VNTR_program/VNTR_database_n1407.RData")
-    nts = colnames(dt)[-1]
-    da_r = da[,nts]
-    L <- sapply(1:length(vntr), function(x)nchar(vntr[x]))
+    dir.create("VNTR",showWarnings = F)
     dir.create("VNTR/tracker",showWarnings = F)
+    if(all(colnames(dt)%in%c("ID","nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT"))){
+      dt <- dt[,c("ID","nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT")]
+    }else{
+      db <- c("ID","nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT")[!c("ID","nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT")%in%c(colnames(dt))]
+      m <- matrix(NA, ncol=length(db),nrow=nrow(dt))
+      colnames(m) <- db
+      dt <- cbind(dt,m)
+      dt <- dt[,c("ID","nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT")]
+    }
     tryCatch(
       {
-        invisible(sapply(1:nrow(dt), function(x)STRtracker(r = unlist(dt[x,2:5]),L=L,out_dir=getwd(),file_name= paste0("VNTR/tracker","/",dt$ID[x]))))
+        invisible(sapply(1:nrow(dt), function(x)VNTRtracker(r = unlist(dt[x,2:5]),out_dir=paste0(getwd(),"/","VNTR/tracker"),file_name= dt$ID[x])))
       },
       error=function(error_message) {
         message(error_message)
