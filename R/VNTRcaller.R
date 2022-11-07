@@ -224,13 +224,16 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 
 
 
+
+
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
 #' The function \code{VNTRcaller} estimates the copy numbers of VNTRs. %% ~~ A
 #' concise (1-5 lines) description of what the function does. ~~
 #'
-#' %% ~~ If necessary, more details than the description above ~~
 #'
 #' @param data MPXV sequences from a file in FASTA format
 #' @param vntr sequence of the repetitive unit
@@ -249,9 +252,6 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' \item{score}{alignment score of a VNTR region for a query strain}
 #' \item{start_pos}{starting position of the VNTR region for a query strain} %%
 #' ...
-#' @note %% ~~further notes~~
-#' @author %% ~~who you are~~
-#' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' @references %% ~put references to the literature/web site here ~ Yang, H.-C.
 #' et al (2022) Monkeypox genome contains variable number tandem repeats
 #' enabling accurate virus tracking.
@@ -289,6 +289,7 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
+#' @importFrom utils write.csv
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                        regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,tracker=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){

@@ -43,9 +43,7 @@ considered.}
 
 \item{tracker}{logical. If TRUE, call function \code{\link{VNTRtracker}}.}
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 \item{ID}{name of MPXV sequences} \item{r}{copy of tandem repeats}
 \item{match}{number of matches} \item{mismatch}{number of mismatches}
@@ -63,18 +61,7 @@ Pagès H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 manipulation of biological strings}.  R package version 2.64.0.
 %%\href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 }
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
 ## load example
 data(example)
