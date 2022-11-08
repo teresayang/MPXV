@@ -18,7 +18,7 @@ VNTRcaller(
   regionEnd = regionEnd,
   baseonly = T,
   VNTRoutput = F,
-  finder = F
+  tracker = F
 )
 }
 %- maybe also 'usage' for other objects documented here.
