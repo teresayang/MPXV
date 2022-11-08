@@ -230,6 +230,12 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 
 
 
+
+
+
+
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -258,7 +264,7 @@ ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
 #' et al (2022) Monkeypox genome contains variable number tandem repeats
 #' enabling accurate virus tracking.
 #'
-#' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
+#' Pages H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 #' manipulation of biological strings}.  R package version 2.64.0.
 #' %%\href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples

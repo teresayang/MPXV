@@ -57,7 +57,7 @@ considered.}
 Yang, H.-C. et al (2022) Monkeypox genome contains variable number
 tandem repeats enabling accurate virus tracking.
 
-Pagès H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
+Pages H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 manipulation of biological strings}.  R package version 2.64.0.
 %%\href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 }
