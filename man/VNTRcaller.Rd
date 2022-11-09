@@ -64,8 +64,7 @@ manipulation of biological strings}.  R package version 2.64.0.
 
 \examples{
 ## load example
-data(example)
-
+data("MPXVseq")
 
 ## VNTR
 vntr <- c("T","TATGATGGA","AT","ATATACATT")
