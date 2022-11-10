@@ -203,7 +203,9 @@ VNTR_sub <- function(data, vntr=vntr,
 
   list(paste0("VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_")),out,vntr_align)
 }
-ref_fa <- seqinr::read.fasta("data/MA001.fasta",as.string = T)
+ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
+
+
 
 
 
