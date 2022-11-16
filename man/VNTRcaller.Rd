@@ -17,6 +17,7 @@ VNTRcaller(
   regionStart = regionStart,
   regionEnd = regionEnd,
   baseonly = T,
+  fseqExtend = fseqExtend,
   VNTRoutput = F,
   tracker = F
 )
@@ -38,6 +39,8 @@ VNTRcaller(
 \item{baseonly}{logical. If TRUE, only the letters of the nucleotide bases
 (i.e. A,C,G,T) are considered. If FALSE, the degenerate codes are also
 considered.}
+
+\item{fseqExtend}{the length of extended flanking sequence}
 
 \item{VNTRoutput}{logical. If TRUE, the output is written to .csv files.}
 
@@ -72,9 +75,10 @@ regionStart <- c(132436,150542,173240,178413)
 regionEnd <- c(133216,151501,173320,179244)
 
 ## parameter settings
-baseonly = TRUE
 match_s = 2
 mismatch_s = -5
+baseonly = TRUE
+fseqExtend = 150
 VNTRoutput = FALSE
 tracker = FALSE
 
@@ -82,7 +86,8 @@ tracker = FALSE
 out <- VNTRcaller(data = MPXVseq, vntr = vntr,
                      regionStart = regionStart, regionEnd = regionEnd,
                      match_s = match_s, mismatch_s=mismatch_s,
-                     baseonly = baseonly,VNTRoutput = VNTRoutput,
+                     baseonly = baseonly, fseqExtend = fseqExtend
+                     VNTRoutput = VNTRoutput,
                      tracker = tracker)
 
 }

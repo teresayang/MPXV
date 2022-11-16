@@ -1,7 +1,7 @@
 VNTR_sub <- function(data, vntr=vntr,
                      regionStart=regionStart, regionEnd=regionEnd,
                      match_s=match_s, mismatch_s=mismatch_s,
-                     baseonly = baseonly,VNTRoutput=VNTRoutput){
+                     baseonly = baseonly,fseqExtend = fseqExtend ,VNTRoutput=VNTRoutput){
 
 
   vntr_t <- paste(rep(vntr,100),collapse = "")
@@ -14,16 +14,16 @@ VNTR_sub <- function(data, vntr=vntr,
   vntr_align <- list()
   l_score <- rep(NA,length(data))
   r_score <- rep(NA,length(data))
-  probe_add_l <- rep(NA,length(data))
-  probe_add_r <- rep(NA,length(data))
+  probe_add_l <- rep(0,length(data))
+  probe_add_r <- rep(0,length(data))
   start_pos <- rep(NA,length(data))
   r_start <- rep(NA,length(data))
   r_end <- rep(NA,length(data))
   ATCG_p <- rep(NA,length(data))
 
-  s_fa <- DNAString(as.character(substr(ref_fa,regionStart-150,regionEnd+150)))
+  s_fa <- DNAString(as.character(substr(ref_fa,regionStart-fseqExtend,regionEnd+fseqExtend)))
   s2 <- DNAString(vntr_t)
-  mat <- nucleotideSubstitutionMatrix(match = match_s, mismatch = mismatch_s, baseOnly = F)
+  mat <- nucleotideSubstitutionMatrix(match = match_s, mismatch = mismatch_s, baseOnly = baseonly)
   mat[!mat%in%c(match_s,mismatch_s)] <- match_s
   reflAlign <- pairwiseAlignment(s_fa, s2, substitutionMatrix = mat,gapOpening = -mismatch_s, gapExtension = 2,type="local")
 
@@ -54,21 +54,21 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
     seq_raw <- DNAString(raw_fa)
-    mat <- nucleotideSubstitutionMatrix(match = 2, mismatch = -4, baseOnly = F)
+    mat <- nucleotideSubstitutionMatrix(match = 2, mismatch = -5, baseOnly = F)
     ##
-    mat[!mat%in%c(2,-4)] <- 1
+    mat[!mat%in%c(2,-5)] <- 1
     Align_l <- pairwiseAlignment(seq_ref_l, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
 
     Align_r <- pairwiseAlignment(seq_ref_r, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
 
     if(str_count(Align_l@subject,"N")>nchar(Align_l@subject)*0.5){
-      seq_ref_l_1 <- substr(s_fa,max(1,reflAlign@pattern@range@start-150),reflAlign@pattern@range@start-1)
+      seq_ref_l_1 <- substr(s_fa,max(1,reflAlign@pattern@range@start-fseqExtend),reflAlign@pattern@range@start-1)
       Align_l <- pairwiseAlignment(seq_ref_l_1, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
       probe_add_l[i] <- 1
     }
 
     if(str_count(Align_r@subject,"N")>nchar(Align_r@subject)*0.5){
-      seq_ref_r_1 <- substr(s_fa,reflAlign@pattern@range@start+reflAlign@pattern@range@width,min(nchar(s_fa),reflAlign@pattern@range@start+reflAlign@pattern@range@width+149))
+      seq_ref_r_1 <- substr(s_fa,reflAlign@pattern@range@start+reflAlign@pattern@range@width,min(nchar(s_fa),reflAlign@pattern@range@start+reflAlign@pattern@range@width+(fseqExtend-1)))
       Align_r <-  pairwiseAlignment(seq_ref_r_1, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
       probe_add_r[i] <- 1
     }
@@ -76,8 +76,9 @@ VNTR_sub <- function(data, vntr=vntr,
     l_score[i] <- Align_l@score
     r_score[i] <- Align_r@score
 
-    if(str_count(Align_r@subject,"N")>100|str_count(Align_l@subject,"N")>100){
+    if((probe_add_r[i]==1&Align_r@score<nchar(Align_r@subject)*2*0.6)|(probe_add_l[i]==1&Align_l@score<nchar(Align_l@subject)*2*0.6)){
       seq_txt <- ""
+      txt <- ""
     }else{
       seq_txt <- substr(raw_fa,Align_l@subject@range@start+Align_l@subject@range@width,
                         Align_r@subject@range@start-1)
@@ -180,7 +181,7 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
     }else{
-      r[i]<-0
+      r[i]<- ifelse(Align_l@score>=180&&Align_r@score>=180,NA,0)
       vntr_align[[i]] <- ""
     }
 
@@ -210,6 +211,10 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 
 
 
+
+
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -226,6 +231,7 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #' @param baseonly logical. If TRUE, only the letters of the nucleotide bases
 #' (i.e. A,C,G,T) are considered. If FALSE, the degenerate codes are also
 #' considered.
+#' @param fseqExtend the length of extended flanking sequence
 #' @param VNTRoutput logical. If TRUE, the output is written to .csv files.
 #' @param tracker logical. If TRUE, call function \code{\link{VNTRtracker}}.
 #' @return \item{ID}{name of MPXV sequences} \item{r}{copy of tandem repeats}
@@ -252,9 +258,10 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #' regionEnd <- c(133216,151501,173320,179244)
 #'
 #' ## parameter settings
-#' baseonly = TRUE
 #' match_s = 2
 #' mismatch_s = -5
+#' baseonly = TRUE
+#' fseqExtend = 150
 #' VNTRoutput = FALSE
 #' tracker = FALSE
 #'
@@ -262,7 +269,8 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #' out <- VNTRcaller(data = MPXVseq, vntr = vntr,
 #'                      regionStart = regionStart, regionEnd = regionEnd,
 #'                      match_s = match_s, mismatch_s=mismatch_s,
-#'                      baseonly = baseonly,VNTRoutput = VNTRoutput,
+#'                      baseonly = baseonly, fseqExtend = fseqExtend
+#'                      VNTRoutput = VNTRoutput,
 #'                      tracker = tracker)
 #'
 #'
@@ -272,7 +280,8 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #' @importFrom seqinr read.fasta
 #' @importFrom utils write.csv
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
-                       regionStart=regionStart, regionEnd=regionEnd,baseonly = T,VNTRoutput=F,tracker=F){
+                       regionStart=regionStart, regionEnd=regionEnd,baseonly = T,
+                       fseqExtend = fseqExtend,VNTRoutput=F,tracker=F){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
     stop("regionStart or regionEnd should be numeric.")
   }
@@ -290,12 +299,18 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     stop("VNTRoutput should be TRUE or FALSE.")
   }
   out <- list()
-  invisible(sapply(1:length(vntr), function(x) out[[x]] <<-VNTR_sub(data, vntr=vntr[x],regionStart=regionStart[x], regionEnd=regionEnd[x], match_s=match_s, mismatch_s=mismatch_s,baseonly = baseonly,VNTRoutput=VNTRoutput)))
+  invisible(sapply(1:length(vntr), function(x) out[[x]] <<-VNTR_sub(data, vntr=vntr[x],regionStart=regionStart[x], regionEnd=regionEnd[x], match_s=match_s, mismatch_s=mismatch_s,baseonly = baseonly,fseqExtend=fseqExtend,VNTRoutput=VNTRoutput)))
   names(out) <- sapply(1:length(out), function(x)out[[x]][[1]])
 
 
-  dt <- data.frame(ID=names(data), sapply(1:length(out), function(x) out[[x]][[2]][,2]))
-  colnames(dt)[-1] <- sapply(1:length(names(out)), function(x)paste(strsplit(names(out)[x],"_")[[1]][2:3],collapse  = "_") )
+  if(length(data)==1){
+    dt <- c(names(data), sapply(1:length(out), function(x) out[[x]][[2]][,2]))
+    names(dt) <- c("ID",sapply(1:length(names(out)), function(x)paste(strsplit(names(out)[x],"_")[[1]][2:3],collapse  = "_") ))
+    dt <- data.frame(t(dt))
+  }else{
+    dt <- data.frame(ID=names(data), sapply(1:length(out), function(x) out[[x]][[2]][,2]))
+    colnames(dt)[-1] <- sapply(1:length(names(out)), function(x)paste(strsplit(names(out)[x],"_")[[1]][2:3],collapse  = "_") )
+  }
   if(VNTRoutput==T){
     write.csv(dt,paste0("VNTR/VNTR_list",paste("baseonly",baseonly,sep = "_"),".csv"),row.names = F)
   }
