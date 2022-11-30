@@ -215,6 +215,16 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 
 
 
+
+
+
+
+
+
+
+
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -273,12 +283,10 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #'                      VNTRoutput = VNTRoutput,
 #'                      tracker = tracker)
 #'
-#'
-#' @export VNTRcaller
 #' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
-#' @importFrom utils write.csv
+#' @export VNTRcaller
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                        regionStart=regionStart, regionEnd=regionEnd,baseonly = T,
                        fseqExtend = fseqExtend,VNTRoutput=F,tracker=F){
