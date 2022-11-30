@@ -12,7 +12,6 @@
 #' between a query MPXV strain and the strains in our database.
 #' 
 #' @param r A vector of copies of VNTR of MPXV.
-#' @param L %% ~~Describe \code{L} here~~
 #' @param out_dir Directory name of the output files.
 #' @param file_name Filename of the output.
 #' @return The output contains multiple columns, including accession ID,
