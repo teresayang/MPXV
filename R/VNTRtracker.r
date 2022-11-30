@@ -57,5 +57,5 @@ VNTRtracker=function(r, out_dir="", file_name="Tracking_output"){
 
   output=cbind(information[order(Dis),1:5],Distance_PIC,Distance_L,Distance_entropy)
 
-  write.csv(output,file=paste0(out_dir,"/",file_name,".csv"))
+  write.csv(output,file=paste0(out_dir,"/",file_name,".csv"),row.names = F)
 }
