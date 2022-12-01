@@ -42,7 +42,18 @@ library(MPXV)
 | MN346690 | 11         | 5                  | 4           | 14                  |
 | MN346692 | 11         | 5                  | 4           | 15                  |
 
-
+```
+>MT903346
+TTTTTTTTCTTT
+>MT903347
+TTTTTTTTCTTT
+>MT903348
+TTTTTTTTCTTT
+>MN346690
+TTTTTTTTCTTT
+>MN346692
+TTTTTTTTCTTT
+```
 
 ### VNTR tracker: ###
 
