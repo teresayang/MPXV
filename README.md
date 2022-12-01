@@ -56,6 +56,8 @@ TTTTTTTTCTTT
 ```
 
 ### VNTR tracker: ###
+In the VNTR tracker output, each row represents a strain in our database, and column variables contain accession ID, country name, collection date, clade, lineage, and three distances (see Yang et al. (2022)) between a query MPXV strain and a strains in our database. 
+The rank of strains are ordered by ploymorphism information content distance (column: "Distance_PIC") (see Yang et al. (2022)) from low to high. 
 
 | Accession        | Country      | Collection.date | clade | lineage  | Distance_PIC | Distance_L  | Distance_entropy  |
 |:----------------:|:------------:|:---------------:|:-----:|:--------:|:------------:|:-----------:|:-----------------:|
@@ -70,5 +72,4 @@ TTTTTTTTCTTT
 | MN346699         | Cote dIvoire | 2017/1/23       | IIa   | unassign | 0.060627581  | 0.100761308 | 0.059279532       |
 | MN346700         | Cote dIvoire | 2017/1/31       | IIa   | unassign | 0.060627581  | 0.100761308 | 0.059279532       |
 
-In the VNTR tracker output, each row represents a strain in our database, and column variables contain accession ID, country name, lineage, release date, clade, lineage, collection date, and three distances (see Yang et al. (2022)) between a query MPXV strain and a strains in our database. 
-The rank of strains are ordered by ploymorphism information content distance (column: "Distance_PIC") (see Yang et al. (2022)) from low to high. 
+
