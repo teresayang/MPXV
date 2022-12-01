@@ -1,5 +1,20 @@
 ## README
-Genotyping Variable Number Tandem Repeats (VNTR) for the genome sequence of monkeypox virus (MPXV)
+Description
 
-*2022-10-26*
+*2022-12-01*
 
+## Installation
+
+To install **`scDEseq`** from [**Github**](https://github.com/teresayang/MPXV_VNTR.git):
+
+```{r Installation from GitHub, eval = FALSE}
+if(!require(devtools)) install.packages("devtools")
+remotes::install_git("https://github.com/teresayang/MPXV_VNTR.git",
+                     credentials=git2r::cred_user_pass("teresayang", "password"))
+```
+
+To load the installed **`MPXV`** in R:
+
+```{r Load MPXV, eval = FALSE}
+library(scDEseq)
+```
