@@ -1,4 +1,6 @@
 information <- readRDS("data/VNTR_n1797.rds")
+
+
 #' Tracking the origin of monkeypox virus (MPXV) by using Variable Number
 #' Tandem Repeats (VNTR) markers
 #'
@@ -13,11 +15,10 @@ information <- readRDS("data/VNTR_n1797.rds")
 #' between a query MPXV strain and the strains in our database.
 #'
 #' @param r A vector of copies of VNTR of MPXV.
-#' @param out_dir Directory name of the output files.
 #' @param file_name Filename of the output.
 #' @return The output contains multiple columns, including accession ID,
-#' country name, lineage, release date, clade, lineage, collection date, and
-#' three distances mentioned above.
+#' country name, collection date, clade, lineage, and three distances mentioned
+#' above.
 #' @references Yang, H.-C. et al (2022) Monkeypox genome contains variable
 #' number tandem repeats enabling accurate virus tracking.
 #' @examples
@@ -26,6 +27,10 @@ information <- readRDS("data/VNTR_n1797.rds")
 #'
 #'   VNTRtracker(r,
 #'               file_name="Tracking_output")
+#' #The output is a csv file with the file name given by the parameter "file_name".
+#' #In this file, each row represents a strain in our database, and column variables contain accession ID, country name, collection date, clade, lineage, and three distances (see Yang et al. (2022)) between a query MPXV strain and a strains in our database.
+#' #The rank of strains are ordered by ploymorphism information content distance (see Yang et al. (2022)) from low to high.
+#'
 #' @importFrom utils write.csv
 #' @export VNTRtracker
 VNTRtracker=function(r, file_name="Tracking_output"){
@@ -57,5 +62,7 @@ VNTRtracker=function(r, file_name="Tracking_output"){
 
   output=cbind(information[order(Dis),1:5],Distance_PIC,Distance_L,Distance_entropy)
 
-  write.csv(output,file=paste0("/VNTR_Tracker/",file_name,".csv"),row.names = F)
+  dir.create("output",showWarnings = F)
+  dir.create("output/VNTRTracker",showWarnings = F)
+  write.csv(output,file=paste0("/VNTRTracker/",file_name,".csv"),row.names = F)
 }

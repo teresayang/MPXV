@@ -197,14 +197,17 @@ VNTR_sub <- function(data, vntr=vntr,
   out$start_pos[out$r==0] <- NA
 
   if(VNTRoutput==T){
-    dir.create("VNTR",showWarnings = F)
-    write.csv(out,paste0("VNTR/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".csv"),row.names = F)
+    dir.create("output",showWarnings = F)
+    dir.create("VNTRCaller",showWarnings = F)
+    write.csv(out,paste0("output/VNTRCaller/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".csv"),row.names = F)
     seqinr::write.fasta(vntr_align,names(vntr_align), paste0("VNTR/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".fas"))
   }
 
   list(paste0("VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_")),out,vntr_align)
 }
 ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
+
+
 
 
 
@@ -320,11 +323,10 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     colnames(dt)[-1] <- sapply(1:length(names(out)), function(x)paste(strsplit(names(out)[x],"_")[[1]][2:3],collapse  = "_") )
   }
   if(VNTRoutput==T){
-    write.csv(dt,paste0("VNTR/VNTR_list",paste("baseonly",baseonly,sep = "_"),".csv"),row.names = F)
+    write.csv(dt,paste0("output/VNTRCaller/VNTR_list",paste("baseonly",baseonly,sep = "_"),".csv"),row.names = F)
   }
   if(tracker==T){
-    dir.create("VNTR",showWarnings = F)
-    dir.create("VNTR/tracker",showWarnings = F)
+
     if(all(colnames(dt)%in%c("ID","nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT"))){
       dt <- dt[,c("ID","nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT")]
     }else{
@@ -336,7 +338,7 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     }
     tryCatch(
       {
-        invisible(sapply(1:nrow(dt), function(x)VNTRtracker(r = unlist(dt[x,2:5]),out_dir=paste0(getwd(),"/","VNTR/tracker"),file_name= dt$ID[x])))
+        invisible(sapply(1:nrow(dt), function(x)VNTRtracker(r = unlist(dt[x,2:5]),file_name= dt$ID[x])))
       },
       error=function(error_message) {
         message(error_message)
