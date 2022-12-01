@@ -25,11 +25,10 @@ information <- readRDS("data/VNTR_n1797.rds")
 #' r=c(27,7,24,16)
 #'
 #'   VNTRtracker(r,
-#'               out_dir="",
 #'               file_name="Tracking_output")
 #' @importFrom utils write.csv
 #' @export VNTRtracker
-VNTRtracker=function(r, out_dir="", file_name="Tracking_output"){
+VNTRtracker=function(r, file_name="Tracking_output"){
   L=c(1,9,2,9)#nt 133095 150554 173287 179074
 
   nts=c("nt133095_T", "nt150554_TATGATGGA", "nt173267_AT", "nt179074_ATATACATT")
@@ -58,5 +57,5 @@ VNTRtracker=function(r, out_dir="", file_name="Tracking_output"){
 
   output=cbind(information[order(Dis),1:5],Distance_PIC,Distance_L,Distance_entropy)
 
-  write.csv(output,file=paste0(out_dir,"/",file_name,".csv"),row.names = F)
+  write.csv(output,file=paste0("/VNTR_Tracker/",file_name,".csv"),row.names = F)
 }
