@@ -5,7 +5,7 @@ Description
 
 ## Installation
 
-To install **`scDEseq`** from [**Github**](https://github.com/teresayang/MPXV_VNTR.git):
+To install **`MPXV`** from [**Github**](https://github.com/teresayang/MPXV_VNTR.git):
 
 ```{r Installation from GitHub, eval = FALSE}
 if(!require(devtools)) install.packages("devtools")
