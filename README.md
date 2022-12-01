@@ -16,5 +16,5 @@ remotes::install_git("https://github.com/teresayang/MPXV_VNTR.git",
 To load the installed **`MPXV`** in R:
 
 ```{r Load MPXV, eval = FALSE}
-library(scDEseq)
+library(MPXV)
 ```
