@@ -8,12 +8,11 @@ Tracking the origin of monkeypox virus (MPXV) by using Variable Number Tandem Re
 The function \code{VNTRtracker} calculates the MPXV strain-strain genetic distance to track the origin of a given MPXV by using VNTRs.
 }
 \usage{
-VNTRtracker(r, out_dir = "", file_name = "Tracking_output")
+VNTRtracker(r, file_name = "Tracking_output")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{r}{A vector of copies of VNTR of MPXV.}
-  \item{out_dir}{Directory name of the output files.}
   \item{file_name}{Filename of the output.}
 }
 \details{
@@ -31,7 +30,6 @@ Yang, H.-C. et al (2022)
 r=c(27,7,24,16)
 
   VNTRtracker(r,
-              out_dir="",
               file_name="Tracking_output")
 #The output is a csv file with the file name given by the parameter "file_name".
 #In this file, each row represents a strain in our database, and column variables contain accession ID, country name, lineage, release date, clade, lineage, collection date, and three distances (see Yang et al. (2022)) between a query MPXV strain and a strains in our database. 
