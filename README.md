@@ -9,8 +9,7 @@ To install **`MPXV`** from [**Github**](https://github.com/teresayang/MPXV_VNTR.
 
 ```{r Installation from GitHub, eval = FALSE}
 if(!require(devtools)) install.packages("devtools")
-remotes::install_git("https://github.com/teresayang/MPXV_VNTR.git",
-                     credentials=git2r::cred_user_pass("teresayang", "password"))
+remotes::install_git("https://github.com/teresayang/MPXV_VNTR.git")
 ```
 
 To load the installed **`MPXV`** in R:
@@ -18,3 +17,8 @@ To load the installed **`MPXV`** in R:
 ```{r Load MPXV, eval = FALSE}
 library(MPXV)
 ```
+
+## Usage
+
+
+
