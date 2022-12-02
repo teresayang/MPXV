@@ -356,4 +356,5 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     )
   }
   out
+
 }
