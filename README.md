@@ -1,7 +1,7 @@
 ## README
 Description
 
-*2022-12-01*
+*2022-12-02*
 
 ## Installation
 
@@ -20,11 +20,26 @@ library(MPXV)
 
 ## Usage
 
+### With raw fasta input
+
+### With vector of copies of the variable number tandem repeats input
 
 
 ## Output
 
 ### VNTR caller: ###
+The function **`VNTRcaller`** estimates the copy number of VNTRs and the output of the function **`VNTRcaller`** will be described below.
+
+For each query sequence of the repetitive unit, there are two output files provided (.csv file and .fas file).
+
+The table includes the following informations:
+1. ID: name of MPXV sequences
+2. r: copy of tandem repeats
+3. match: number of matches
+4. mismatch: number of mismatches
+5. indel: number of insertions and deletions (indels)
+6. score: alignment score of a VNTR region for a query strain
+7. start_pos: starting position of the VNTR region for a query strain
 
 | ID       | r  | match | mismatch | indel | score | start_pos  |
 |:--------:|:---:|:-----:|:--------:|:-----:|:-----:|:----------:|
@@ -34,14 +49,7 @@ library(MPXV)
 | MN346690 | 11 | 11    | 1        | 0     | 17    | 134676     |
 | MN346692 | 11 | 11    | 1        | 0     | 17    | 134636     |
 
-| ID       | nt133095_T | nt150554_TATGATGGA | nt173267_AT | nt179074_ATATACATT  |
-|:--------:|:----------:|:------------------:|:-----------:|:-------------------:|
-| MT903346 | 11         | 3                  | 4           | 26                  |
-| MT903347 | 11         | 3                  | 4           | 26                  |
-| MT903348 | 11         | 3                  | 4           | 26                  |
-| MN346690 | 11         | 5                  | 4           | 14                  |
-| MN346692 | 11         | 5                  | 4           | 15                  |
-
+The VNTR region sequence for query strains are shown in FASTA format.
 ```
 >MT903346
 TTTTTTTTCTTT
@@ -54,6 +62,16 @@ TTTTTTTTCTTT
 >MN346692
 TTTTTTTTCTTT
 ```
+
+
+| ID       | nt133095_T | nt150554_TATGATGGA | nt173267_AT | nt179074_ATATACATT  |
+|:--------:|:----------:|:------------------:|:-----------:|:-------------------:|
+| MT903346 | 11         | 3                  | 4           | 26                  |
+| MT903347 | 11         | 3                  | 4           | 26                  |
+| MT903348 | 11         | 3                  | 4           | 26                  |
+| MN346690 | 11         | 5                  | 4           | 14                  |
+| MN346692 | 11         | 5                  | 4           | 15                  |
+
 
 ### VNTR tracker: ###
 In the VNTR tracker output, each row represents a strain in our database, and column variables contain accession ID, country name, collection date, clade, lineage, and three distances (see Yang et al. (2022)) between a query MPXV strain and a strains in our database. 
@@ -72,4 +90,6 @@ The rank of strains are ordered by ploymorphism information content distance (co
 | MN346699         | Cote dIvoire | 2017/1/23       | IIa   | unassign | 0.060627581  | 0.100761308 | 0.059279532       |
 | MN346700         | Cote dIvoire | 2017/1/31       | IIa   | unassign | 0.060627581  | 0.100761308 | 0.059279532       |
 
-
+## Reference ##
+Yang, H.-C. et al (2022) **Monkeypox genome contains variable number tandem repeats enabling
+accurate virus tracking.**
