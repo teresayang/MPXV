@@ -200,7 +200,7 @@ VNTR_sub <- function(data, vntr=vntr,
     dir.create("output",showWarnings = F)
     dir.create("output/VNTRCaller",showWarnings = F)
     write.csv(out,paste0("output/VNTRCaller/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".csv"),row.names = F)
-    seqinr::write.fasta(vntr_align,names(vntr_align), paste0("VNTR/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".fas"))
+    seqinr::write.fasta(vntr_align,names(vntr_align), paste0("output/VNTRCaller/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".fas"))
   }
 
   list(paste0("VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_")),out,vntr_align)
