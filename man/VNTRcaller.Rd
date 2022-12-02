@@ -84,11 +84,14 @@ tracker = FALSE
 
 ## computes the copy of the variable number tandem repeats
 out <- VNTRcaller(data = MPXVseq, vntr = vntr,
-                     regionStart = regionStart, regionEnd = regionEnd,
-                     match_s = match_s, mismatch_s=mismatch_s,
-                     baseonly = baseonly, fseqExtend = fseqExtend,
-                     VNTRoutput = VNTRoutput,
-                     tracker = tracker)
+                  regionStart = regionStart, regionEnd = regionEnd,
+                  match_s = match_s, mismatch_s=mismatch_s,
+                  baseonly = baseonly, fseqExtend = fseqExtend,
+                  VNTRoutput = VNTRoutput,
+                  tracker = tracker)
+
+## output
+
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

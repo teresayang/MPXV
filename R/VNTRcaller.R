@@ -198,7 +198,7 @@ VNTR_sub <- function(data, vntr=vntr,
 
   if(VNTRoutput==T){
     dir.create("output",showWarnings = F)
-    dir.create("VNTRCaller",showWarnings = F)
+    dir.create("output/VNTRCaller",showWarnings = F)
     write.csv(out,paste0("output/VNTRCaller/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".csv"),row.names = F)
     seqinr::write.fasta(vntr_align,names(vntr_align), paste0("VNTR/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".fas"))
   }
@@ -206,6 +206,8 @@ VNTR_sub <- function(data, vntr=vntr,
   list(paste0("VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_")),out,vntr_align)
 }
 ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
+
+
 
 
 
@@ -284,16 +286,18 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #'
 #' ## computes the copy of the variable number tandem repeats
 #' out <- VNTRcaller(data = MPXVseq, vntr = vntr,
-#'                      regionStart = regionStart, regionEnd = regionEnd,
-#'                      match_s = match_s, mismatch_s=mismatch_s,
-#'                      baseonly = baseonly, fseqExtend = fseqExtend,
-#'                      VNTRoutput = VNTRoutput,
-#'                      tracker = tracker)
+#'                   regionStart = regionStart, regionEnd = regionEnd,
+#'                   match_s = match_s, mismatch_s=mismatch_s,
+#'                   baseonly = baseonly, fseqExtend = fseqExtend,
+#'                   VNTRoutput = VNTRoutput,
+#'                   tracker = tracker)
 #'
+#' ## output
 #'
 #' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
+#'
 #' @export VNTRcaller
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                        regionStart=regionStart, regionEnd=regionEnd,baseonly = T,
