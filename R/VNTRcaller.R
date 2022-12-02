@@ -347,7 +347,7 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     }
     tryCatch(
       {
-        invisible(sapply(1:nrow(dt), function(x)VNTRtracker(r = unlist(dt[x,2:5]),file_name= dt$ID[x])))
+        invisible(sapply(1:nrow(dt), function(x)VNTRtracker(r = as.numeric(unlist(dt[x,2:5])),file_name= dt$ID[x])))
       },
       error=function(error_message) {
         message(error_message)
