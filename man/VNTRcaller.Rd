@@ -67,7 +67,7 @@ manipulation of biological strings}.  R package version 2.64.0.
 
 \examples{
 ## Read MPXV example sequences from a file in FASTA format.
-MPXVseq <- read.fasta(system.file("extdata/MPXV_seq_example.fasta", package = "MPXV"), as.string = T)
+MPXVseq <- read.fasta(system.file("extdata/MPXV_seq_example.fasta.gz", package = "MPXV"), as.string = T)
 
 ## VNTR
 vntr <- c("T","TATGATGGA","AT","ATATACATT")
