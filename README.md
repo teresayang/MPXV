@@ -18,11 +18,6 @@ To load the installed **`MPXV`** in R:
 library(MPXV)
 ```
 
-## Usage
-
-### With raw fasta input
-
-### With vector of copies of the variable number tandem repeats input
 
 
 ## Output
