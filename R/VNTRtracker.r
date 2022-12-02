@@ -70,5 +70,5 @@ VNTRtracker=function(r, file_name="Tracking_output"){
 
   dir.create("output",showWarnings = F)
   dir.create("output/VNTRTracker",showWarnings = F)
-  write.csv(output,file=paste0("/VNTRTracker/",file_name,".csv"),row.names = F)
+  write.csv(output,file=paste0("output/VNTRTracker/",file_name,".csv"),row.names = F)
 }
