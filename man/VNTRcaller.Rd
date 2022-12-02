@@ -86,7 +86,7 @@ tracker = FALSE
 out <- VNTRcaller(data = MPXVseq, vntr = vntr,
                      regionStart = regionStart, regionEnd = regionEnd,
                      match_s = match_s, mismatch_s=mismatch_s,
-                     baseonly = baseonly, fseqExtend = fseqExtend
+                     baseonly = baseonly, fseqExtend = fseqExtend,
                      VNTRoutput = VNTRoutput,
                      tracker = tracker)
 
