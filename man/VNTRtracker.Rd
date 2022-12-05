@@ -29,10 +29,10 @@ Yang, H.-C. et al (2022)
 \examples{
 r=c(27,7,24,16)
 
-  VNTRtracker(r,
-              file_name="Tracking_output")
 ## The output is a csv file with the file name given by the parameter "file_name".
 ## In this file, each row represents a strain in our database, and column variables contain accession ID, country name, collection date, clade, lineage, and three distances (see Yang et al. (2022)) between a query MPXV strain and a strains in our database. 
 ## The rank of strains are ordered by ploymorphism information content distance (see Yang et al. (2022)) from low to high. 
+VNTRtracker(r, file_name="Tracking_output")
+
 }
 
