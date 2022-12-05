@@ -23,11 +23,11 @@ library(MPXV)
 ## Output
 
 ### VNTR caller: ###
-The function **`VNTRcaller`** estimates the copy number of VNTRs and the output of the function **`VNTRcaller`** will be described below.
+The function **`VNTRcaller`** estimates the copy number of VNTRs and the output of the function **`VNTRcaller`** are described below.
 
-For each query sequence of the repetitive unit, there are two output files provided (.csv file and .fas file).
+For each query sequence of the repetitive unit, there are two output files provided (.csv file and .fas file). In addition, a summary table for all query sequence of the repetitive units is exported to a .csv file.
 
-The table includes the following informations:
+The table (.csv) includes the following informations:
 1. ID: name of MPXV sequences
 2. r: copy of tandem repeats
 3. match: number of matches
@@ -36,36 +36,40 @@ The table includes the following informations:
 6. score: alignment score of a VNTR region for a query strain
 7. start_pos: starting position of the VNTR region for a query strain
 
-| ID       | r  | match | mismatch | indel | score | start_pos  |
-|:--------:|:---:|:-----:|:--------:|:-----:|:-----:|:----------:|
-| MT903346 | 11 | 11    | 1        | 0     | 17    | 135074     |
-| MT903347 | 11 | 11    | 1        | 0     | 17    | 135075     |
-| MT903348 | 11 | 11    | 1        | 0     | 17    | 135075     |
-| MN346690 | 11 | 11    | 1        | 0     | 17    | 134676     |
-| MN346692 | 11 | 11    | 1        | 0     | 17    | 134636     |
+| ID               | r  | match | mismatch | indel | score | start_pos  |
+|:----------------:|:---:|:-----:|:--------:|:-----:|:-----:|:----------:|
+| ON563414         | 28 | 28    | 0        | 0     | 56    | 133095     |
+| EPI_ISL_13308158 | 19 | 19    | 0        | 0     | 38    | 132741     |
+| EPI_ISL_13889908 | 30 | 30    | 0        | 0     | 60    | 133200     |
+| EPI_ISL_14699911 | 32 | 32    | 0        | 0     | 64    | 133102     |
+| EPI_ISL_14166709 | 20 | 20    | 0        | 0     | 40    | 133080     |
 
-The VNTR region sequence for query strains are shown in FASTA format.
+
+The VNTR region sequence for query strains are shown in FASTA format (.fas file).
+
 ```
->MT903346
-TTTTTTTTCTTT
->MT903347
-TTTTTTTTCTTT
->MT903348
-TTTTTTTTCTTT
->MN346690
-TTTTTTTTCTTT
->MN346692
-TTTTTTTTCTTT
+>ON563414
+TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+>EPI_ISL_13308158
+TTTTTTTTTTTTTTTTTTT
+>EPI_ISL_13889908
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+>EPI_ISL_14699911
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+>EPI_ISL_14166709
+TTTTTTTTTTTTTTTTTTTT
 ```
 
+Summary table for all query sequence of the repetitive units are showed as below. Each row represents a MPXV strain and the first column is the names of MPXV sequences. Each of the remaining columns represents a sequence of the repetitive units. Each cell represents a copy of tandem repeats.
 
-| ID       | nt133095_T | nt150554_TATGATGGA | nt173267_AT | nt179074_ATATACATT  |
-|:--------:|:----------:|:------------------:|:-----------:|:-------------------:|
-| MT903346 | 11         | 3                  | 4           | 26                  |
-| MT903347 | 11         | 3                  | 4           | 26                  |
-| MT903348 | 11         | 3                  | 4           | 26                  |
-| MN346690 | 11         | 5                  | 4           | 14                  |
-| MN346692 | 11         | 5                  | 4           | 15                  |
+| ID               | nt133095_T | nt150554_TATGATGGA | nt173267_AT | nt179074_ATATACATT  |
+|:------------------:|:------------:|:--------------------:|:-------------:|:---------------------:|
+| ON563414         | 28         | 7                  | 24          | 16                  |
+| EPI_ISL_13308158 | 19         | 7                  | 20          | 15                  |
+| EPI_ISL_13889908 | 30         | 9                  | 24          | 7                   |
+| EPI_ISL_14699911 | 32         | 7                  | 25          | 7                   |
+| EPI_ISL_14166709 | 20         | 7                  | 24          | 16                  |
+
 
 
 ### VNTR tracker: ###
