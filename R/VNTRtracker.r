@@ -9,6 +9,8 @@ information <- readRDS("data/VNTR_n1797.rds")
 
 
 
+
+
 #' Tracking the origin of monkeypox virus (MPXV) by using Variable Number
 #' Tandem Repeats (VNTR) markers
 #'
@@ -73,4 +75,5 @@ VNTRtracker=function(r, file_name="Tracking_output"){
   dir.create("output",showWarnings = F)
   dir.create("output/VNTRTracker",showWarnings = F)
   write.csv(output,file=paste0("output/VNTRTracker/",file_name,".csv"),row.names = F)
+  print(paste0("Tracking VNTR is done and the results are saved in ", getwd(), "/output/VNTRTracker"))
 }
