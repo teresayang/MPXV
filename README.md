@@ -1,7 +1,9 @@
-## README
-Description
-
+## Variable Number Tandem Repeats Analysis
 *2022-12-05*
+
+## Description
+Since May 2022, confirmed cases monkeypox (mpox) have been reported in many countries. WHO declares the ongoing monkeypox outbreak a Public Health Emergency of Interntional Concern. The genome of monkeypox contains a large number of variable number tandem repeats (VNTR). By analyzing VNTR, researchers will have better understand of the ongoing monkeypox outbreak. Therefore, package **`MPXV`** provides the functions not only to estimate the copy number of VNTRs but also to track the origin of a given MPXV by using VNTRs.
+
 
 ## Installation
 
