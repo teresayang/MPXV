@@ -41,7 +41,7 @@ files provided (.csv file and .fas file). In addition, a summary table
 for all query sequence of the repetitive units is exported to a .csv
 file.
 
-The table (.csv) includes the following informations: 
+The table (.csv) includes the following information: 
 1. ID: name of MPXV sequences 
 2. r: copy of tandem repeats 
 3. match: number of matches
