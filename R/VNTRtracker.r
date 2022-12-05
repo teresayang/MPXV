@@ -35,6 +35,8 @@ information <- readRDS("data/VNTR_n1797.rds")
 
 
 
+
+
 #' Tracking the origin of monkeypox virus (MPXV) by using Variable Number
 #' Tandem Repeats (VNTR) markers
 #'
@@ -65,6 +67,7 @@ information <- readRDS("data/VNTR_n1797.rds")
 #' ## between a query MPXV strain and a strains in our database.
 #' ## The rank of strains are ordered by ploymorphism information content distance (see Yang et al. (2022)) from low to high.
 #' VNTRtracker(r, file_name="Tracking_output")
+#'
 #'
 #' @importFrom utils write.csv
 #' @export VNTRtracker
