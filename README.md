@@ -1,12 +1,3 @@
----
-output:
-  html_document: default
-  pdf_document: default
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 ## Variable Number Tandem Repeats Analysis
 
 *2022-12-05*
