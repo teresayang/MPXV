@@ -90,5 +90,9 @@ out <- VNTRcaller(data = MPXVseq, vntr = vntr,
                   VNTRoutput = VNTRoutput,
                   tracker = tracker)
 
+## More details about the output of VNTRcaller,
+please vitsit https://github.com/teresayang/MPXV_VNTR.
+
 }
+
 
