@@ -30,7 +30,7 @@ VNTR_sub <- function(data, vntr=vntr,
   vntr_pos_ref <- str_locate_all(gsub("-","",reflAlign@subject),vntr)[[1]]
 
   gap_l <- rep(0,nchar(reflAlign@subject))
-  gap_l[str_locate_all(reflAlign@subject,"-")[[1]][,1]] <- 1
+  gap_l[str_locate_all(as.character(reflAlign@subject),"-")[[1]][,1]] <- 1
   gap_l<- cumsum(gap_l)
   #
   a <- vntr_pos_ref[1,1]+gap_l[vntr_pos_ref[1,1]]
