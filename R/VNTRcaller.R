@@ -61,13 +61,13 @@ VNTR_sub <- function(data, vntr=vntr,
 
     Align_r <- pairwiseAlignment(seq_ref_r, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
 
-    if(str_count(Align_l@subject,"N")>nchar(Align_l@subject)*0.5){
+    if(str_count(as.character(Align_l@subject),"N")>nchar(Align_l@subject)*0.5){
       seq_ref_l_1 <- substr(s_fa,max(1,reflAlign@pattern@range@start-fseqExtend),reflAlign@pattern@range@start-1)
       Align_l <- pairwiseAlignment(seq_ref_l_1, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
       probe_add_l[i] <- 1
     }
 
-    if(str_count(Align_r@subject,"N")>nchar(Align_r@subject)*0.5){
+    if(str_count(as.character(Align_r@subject),"N")>nchar(Align_r@subject)*0.5){
       seq_ref_r_1 <- substr(s_fa,reflAlign@pattern@range@start+reflAlign@pattern@range@width,min(nchar(s_fa),reflAlign@pattern@range@start+reflAlign@pattern@range@width+(fseqExtend-1)))
       Align_r <-  pairwiseAlignment(seq_ref_r_1, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
       probe_add_r[i] <- 1
@@ -143,7 +143,7 @@ VNTR_sub <- function(data, vntr=vntr,
 
         if(nrow(vntr_pos)!=0){
           gap_l <- rep(0,nchar(s2_1))
-          gap_l[str_locate_all(s2_1,"-")[[1]][,1]] <- 1
+          gap_l[str_locate_all(as.character(s2_1),"-")[[1]][,1]] <- 1
           gap_l<- cumsum(gap_l)
 
           a <- vntr_pos[1,1]+gap_l[vntr_pos[1,1]]
