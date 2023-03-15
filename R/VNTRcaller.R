@@ -76,7 +76,7 @@ VNTR_sub <- function(data, vntr=vntr,
     l_score[i] <- Align_l@score
     r_score[i] <- Align_r@score
 
-    if((probe_add_r[i]==1&Align_r@score<nchar(Align_r@subject)*2*0.6)|(probe_add_l[i]==1&Align_l@score<nchar(Align_l@subject)*2*0.6)){
+    if((Align_r@score<nchar(Align_r@subject)*2*0.6)|(Align_l@score<nchar(Align_l@subject)*2*0.6)){
       seq_txt <- ""
       txt <- ""
     }else{
@@ -264,6 +264,8 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 
 
 
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -324,10 +326,12 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #'
 #' ## For more details about the output of VNTRcaller, please vitsit https://github.com/teresayang/MPXV_VNTR.
 #'
+#'
+#' @export VNTRcaller
 #' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
-#' @export VNTRcaller
+#' @importFrom utils write.csv
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                        regionStart=regionStart, regionEnd=regionEnd,baseonly = T,
                        fseqExtend = fseqExtend,VNTRoutput=F,tracker=F){
