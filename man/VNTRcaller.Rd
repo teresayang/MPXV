@@ -17,6 +17,7 @@ VNTRcaller(
   regionStart = regionStart,
   regionEnd = regionEnd,
   baseonly = T,
+  fseq = fseq,
   fseqExtend = fseqExtend,
   VNTRoutput = F,
   tracker = F
@@ -40,7 +41,11 @@ VNTRcaller(
 (i.e. A,C,G,T) are considered. If FALSE, the degenerate codes are also
 considered.}
 
+\item{fseq}{the length of flanking sequence}
+
 \item{fseqExtend}{the length of extended flanking sequence}
+
+\item{pfseqmismatch}{tolerence proportion of number of mismatch to the length of flanking sequence}
 
 \item{VNTRoutput}{logical. If TRUE, the output is written to .csv files.}
 
@@ -82,6 +87,7 @@ regionEnd <- c(133216,151501,173320,179244)
 match_s = 2
 mismatch_s = -5
 baseonly = TRUE
+fseq = 25
 fseqExtend = 150
 VNTRoutput = FALSE
 tracker = FALSE
@@ -90,7 +96,8 @@ tracker = FALSE
 out <- VNTRcaller(data = MPXVseq, vntr = vntr,
                   regionStart = regionStart, regionEnd = regionEnd,
                   match_s = match_s, mismatch_s=mismatch_s,
-                  baseonly = baseonly, fseqExtend = fseqExtend,
+                  baseonly = baseonly,
+                  fseq = fseq, fseqExtend = fseqExtend,
                   VNTRoutput = VNTRoutput,
                   tracker = tracker)
 

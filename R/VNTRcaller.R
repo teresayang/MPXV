@@ -389,13 +389,15 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
 
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
-#' 
+#'
 #' The function \code{VNTRcaller} estimates the copy numbers of VNTRs. %% ~~ A
 #' concise (1-5 lines) description of what the function does. ~~
-#' 
-#' 
+#'
+#'
 #' @param data MPXV sequences from a file in FASTA format
 #' @param vntr sequence of the repetitive unit
 #' @param match_s matching weight
@@ -405,7 +407,10 @@ VNTR_sub <- function(data, vntr=vntr,
 #' @param baseonly logical. If TRUE, only the letters of the nucleotide bases
 #' (i.e. A,C,G,T) are considered. If FALSE, the degenerate codes are also
 #' considered.
+#' @param fseq the length of flanking sequence
 #' @param fseqExtend the length of extended flanking sequence
+#' @param pfseqmismatch tolerence proportion of number of mismatch to the
+#' length of flanking sequence
 #' @param VNTRoutput logical. If TRUE, the output is written to .csv files.
 #' @param tracker logical. If TRUE, call function \code{\link{VNTRtracker}}.
 #' @return \item{ID}{name of MPXV sequences} \item{r}{copy of tandem repeats}
@@ -420,44 +425,53 @@ VNTR_sub <- function(data, vntr=vntr,
 #' @references %% ~put references to the literature/web site here ~ Yang, H.-C.
 #' et al (2022) Monkeypox genome contains variable number tandem repeats
 #' enabling accurate virus tracking.
-#' 
+#'
 #' Pages H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 #' manipulation of biological strings}.  R package version 2.64.0.
 #' %%\href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples
-#' 
+#'
 #' ## Read MPXV example sequences from a file in FASTA format.
 #' MPXVseq <- read.fasta(system.file("extdata/MPXV_seq_example.fasta.gz", package = "MPXV"), as.string = T)
-#' 
+#'
 #' ## VNTR
 #' vntr <- c("T","TATGATGGA","AT","ATATACATT")
 #' regionStart <- c(132436,150542,173240,178413)
 #' regionEnd <- c(133216,151501,173320,179244)
-#' 
+#'
 #' ## parameter settings
 #' match_s = 2
 #' mismatch_s = -5
 #' baseonly = TRUE
+#' fseq = 25
 #' fseqExtend = 150
 #' VNTRoutput = FALSE
 #' tracker = FALSE
-#' 
+#'
 #' ## computes the copy of the variable number tandem repeats
 #' out <- VNTRcaller(data = MPXVseq, vntr = vntr,
 #'                   regionStart = regionStart, regionEnd = regionEnd,
 #'                   match_s = match_s, mismatch_s=mismatch_s,
-#'                   baseonly = baseonly, fseqExtend = fseqExtend,
+#'                   baseonly = baseonly,
+#'                   fseq = fseq, fseqExtend = fseqExtend,
 #'                   VNTRoutput = VNTRoutput,
 #'                   tracker = tracker)
-#' 
+#'
 #' ## For more details about the output of VNTRcaller, please vitsit https://github.com/teresayang/MPXV_VNTR.
-#' 
-#' 
+#'
+#'
 #' @export VNTRcaller
+#' #' @import Biostrings
+#' @importFrom stringr str_locate_all str_count str_locate
+#' @importFrom seqinr read.fasta
+#' @importFrom utils write.csv
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                        regionStart=regionStart, regionEnd=regionEnd,baseonly = T,
                        fseqExtend = fseqExtend,VNTRoutput=F,tracker=F,
-                       len_fl = 25, mis_prop = 0.1){
+                       fseq = fseq, pfseqmismatch = 0.1){
+  len_fl = fseq
+  mis_prop = pfseqmismatch
+
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
     stop("regionStart or regionEnd should be numeric.")
   }
