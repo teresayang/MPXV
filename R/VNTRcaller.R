@@ -1,8 +1,76 @@
+flanking_seq_match <- function(seq,pattern,start,end,max.mismatch,fixed,ext){
+
+  df <- sapply(1:length(end),function(x){
+    m <- matchPattern(pattern,seq[start[x]:end[x]],
+                      max.mismatch=max.mismatch, min.mismatch=0,
+                      with.indels=TRUE, fixed=fixed,
+                      algorithm="auto")
+    if(length(m@ranges@start)==0){
+      c(0,0)
+    }else{
+      cbind(start[x]+m@ranges@start-1,m@ranges@width)
+    }
+
+
+  })
+
+
+  if(is.matrix(df)==TRUE){
+    df <-  as.data.frame(t(df))
+  }else{
+    df <- as.data.frame(do.call("rbind",df))
+  }
+
+  colnames(df) <- c("start","width")
+  df$deg <- 0
+
+  df <- df[df$width!=0,]
+
+
+  if(ext==1){
+    df_N <- sapply(1:length(end),function(x){
+      m <- matchPattern(paste(rep("N",nchar(pattern)),collapse = ""),seq[start[x]:end[x]],
+                        max.mismatch=max.mismatch, min.mismatch=0,
+                        with.indels=TRUE, fixed=T,
+                        algorithm="auto")
+      if(length(m@ranges@start)==0){
+        c(0,0)
+      }else{
+        cbind(start[x]+m@ranges@start-1,m@ranges@width)
+      }
+
+    })
+
+    if(is.matrix(df_N)==TRUE){
+      df_N <-  as.data.frame(t(df_N))
+    }else{
+      df_N <- as.data.frame(do.call("rbind",df_N))
+    }
+
+    colnames(df_N) <- c("start","width")
+
+    df <- df[!df$start%in%df_N$start,]
+    if(nrow(df)!=0){
+      df$deg <- sapply(1:nrow(df),function(x)    str_count(as.character(substr(seq,df$start[x],df$start[x]+df$width[x]-1)),paste0(setdiff(LETTERS,c("A","T","C","G")),collapse = "|")) )
+      df <- df[df$width!=df$deg,]
+      df <- df[(df$deg/df$width)==min(df$deg/df$width),]
+    }
+  }
+
+
+
+  df
+}
+ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
+
 VNTR_sub <- function(data, vntr=vntr,
                      regionStart=regionStart, regionEnd=regionEnd,
                      match_s=match_s, mismatch_s=mismatch_s,
-                     baseonly = baseonly,fseqExtend = fseqExtend ,VNTRoutput=VNTRoutput){
+                     baseonly = baseonly,fseqExtend = fseqExtend ,VNTRoutput=VNTRoutput,
+                     len_fl = len_fl, mis_prop = mis_prop ){
 
+  max.mismatch = ceiling(len_fl*mis_prop)
+  max.mismatch.ext = ceiling(fseqExtend*mis_prop)
 
   vntr_t <- paste(rep(vntr,100),collapse = "")
   match <- rep(NA,length(data))
@@ -12,14 +80,16 @@ VNTR_sub <- function(data, vntr=vntr,
   vntr_ind <- rep(NA,length(data))
   indel <- rep(NA,length(data))
   vntr_align <- list()
-  l_score <- rep(NA,length(data))
-  r_score <- rep(NA,length(data))
   probe_add_l <- rep(0,length(data))
   probe_add_r <- rep(0,length(data))
   start_pos <- rep(NA,length(data))
   r_start <- rep(NA,length(data))
   r_end <- rep(NA,length(data))
   ATCG_p <- rep(NA,length(data))
+  count_n <- rep(NA,length(data))
+  count_deg <- rep(NA,length(data))
+  count_len <- rep(NA,length(data))
+  vntr_match_norm <- rep(NA,length(data))
 
   s_fa <- DNAString(as.character(substr(ref_fa,regionStart-fseqExtend,regionEnd+fseqExtend)))
   s2 <- DNAString(vntr_t)
@@ -41,8 +111,8 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
 
-  seq_ref_l <- substr(s_fa,reflAlign@pattern@range@start-25,reflAlign@pattern@range@start-1)
-  seq_ref_r <-  substr(s_fa,reflAlign@pattern@range@start+b,reflAlign@pattern@range@start+b+24)
+  seq_ref_l <- substr(s_fa,reflAlign@pattern@range@start-len_fl,reflAlign@pattern@range@start-1)
+  seq_ref_r <-  substr(s_fa,reflAlign@pattern@range@start+b,reflAlign@pattern@range@start+b+(len_fl-1))
 
 
 
@@ -54,68 +124,108 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
     seq_raw <- DNAString(raw_fa)
-    mat <- nucleotideSubstitutionMatrix(match = 2, mismatch = -5, baseOnly = F)
-    ##
-    mat[!mat%in%c(2,-5)] <- 1
-    Align_l <- pairwiseAlignment(seq_ref_l, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
 
-    Align_r <- pairwiseAlignment(seq_ref_r, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
+    st <- seq(1,nchar(seq_raw),20000-len_fl)
+    en <- c(st[-1]-1+len_fl,nchar( seq_raw))
 
-    if(str_count(as.character(Align_l@subject),"N")>nchar(Align_l@subject)*0.5){
+    tmp_mismatch=0
+    id = 0
+    while(id==0){
+      fl_l <- flanking_seq_match(seq=seq_raw,pattern=seq_ref_l,start=st,end=en,max.mismatch=max.mismatch,fixed = T,ext=0)
+
+
+      if(tmp_mismatch==max.mismatch){
+        id = 1
+      }else{
+        id = nrow(fl_l)
+      }
+      tmp_mismatch = tmp_mismatch+1
+    }
+
+    tmp_mismatch=0
+    id = 0
+    while(id==0){
+      fl_r <- flanking_seq_match(seq=seq_raw,pattern=seq_ref_r,start=st,end=en,max.mismatch=max.mismatch,fixed = T,ext=0)
+
+
+      if(tmp_mismatch==max.mismatch){
+        id = 1
+      }else{
+        id = nrow(fl_r)
+      }
+      tmp_mismatch = tmp_mismatch+1
+    }
+
+    # fl_l <- flanking_seq_match(seq=seq_raw,pattern=seq_ref_l,start=st,end=en,max.mismatch=max.mismatch,fixed = T,ext=0)
+    # fl_r <- flanking_seq_match(seq=seq_raw,pattern=seq_ref_r,start=st,end=en,max.mismatch=max.mismatch,fixed = T,ext=0)
+
+    st_ext <- seq(1,nchar(seq_raw),20000-fseqExtend)
+    en_ext <- c(st_ext[-1]-1+fseqExtend,nchar( seq_raw))
+
+    if(nrow(fl_l)!=1){
       seq_ref_l_1 <- substr(s_fa,max(1,reflAlign@pattern@range@start-fseqExtend),reflAlign@pattern@range@start-1)
-      Align_l <- pairwiseAlignment(seq_ref_l_1, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
+      tmp_mismatch.ext=0
+      id = 0
+      while(id==0){
+        fl_l <- flanking_seq_match(seq=seq_raw,pattern=seq_ref_l_1,start=st_ext,end=en_ext,max.mismatch=tmp_mismatch.ext,fixed = F,ext=1)
+        if(tmp_mismatch.ext==max.mismatch.ext){
+          id = 1
+        }else{
+          id = nrow(fl_l)
+        }
+        tmp_mismatch.ext = tmp_mismatch.ext+1
+      }
       probe_add_l[i] <- 1
     }
 
-    if(str_count(as.character(Align_r@subject),"N")>nchar(Align_r@subject)*0.5){
+
+
+    if(nrow(fl_r)!=1){
       seq_ref_r_1 <- substr(s_fa,reflAlign@pattern@range@start+reflAlign@pattern@range@width,min(nchar(s_fa),reflAlign@pattern@range@start+reflAlign@pattern@range@width+(fseqExtend-1)))
-      Align_r <-  pairwiseAlignment(seq_ref_r_1, seq_raw ,type="global-local", substitutionMatrix = mat,gapOpening = 4, gapExtension = 1)
+      tmp_mismatch.ext=0
+      id = 0
+      while(id==0){
+        fl_r <- flanking_seq_match(seq=seq_raw,pattern=seq_ref_r_1,start=st_ext,end=en_ext,max.mismatch=tmp_mismatch.ext,fixed = F,ext=1)
+        if(tmp_mismatch.ext==max.mismatch.ext){
+          id = 1
+        }else{
+          id = nrow(fl_r)
+        }
+        tmp_mismatch.ext = tmp_mismatch.ext+1
+      }
       probe_add_r[i] <- 1
     }
 
-    l_score[i] <- Align_l@score
-    r_score[i] <- Align_r@score
 
-    if((Align_r@score<nchar(Align_r@subject)*2*0.6)|(Align_l@score<nchar(Align_l@subject)*2*0.6)){
+    if(nrow(fl_l)!=1|nrow(fl_r)!=1){
       seq_txt <- ""
       txt <- ""
     }else{
-      seq_txt <- substr(raw_fa,Align_l@subject@range@start+Align_l@subject@range@width,
-                        Align_r@subject@range@start-1)
+      seq_txt <- substr(raw_fa,fl_l$start+fl_l$width,fl_r$start-1)
 
       deg <- setdiff(LETTERS,c("A","T","C","G"))
+
+      count_n[i] <- str_count(seq_txt,"N")
+      count_deg[i] <- str_count(seq_txt,paste0(setdiff(LETTERS,c("A","T","C","G","N")),collapse = "|"))
+      count_len[i] <- nchar(seq_txt)
+
       seq_txt <- gsub(ifelse(baseonly==T,paste0(deg,collapse = "|"),""),"",seq_txt)
 
-
-
-      l_seq <- strsplit(as.character(Align_l@subject), split = "")[[1]]
-      l_ref <- strsplit(as.character(Align_l@pattern), split = "")[[1]]
-
-
-      l_seq <- gsub("-","",paste0(l_seq,collapse =  ""))
-
-      r_seq <- strsplit(as.character(Align_r@subject), split = "")[[1]]
-      r_ref <- strsplit(as.character(Align_r@pattern), split = "")[[1]]
-
-
-      r_seq <- gsub("-","",paste0(r_seq,collapse =  ""))
-
-
       txt <- seq_txt
-      seq_raw <- DNAString(paste0(substr(raw_fa,1,Align_l@subject@range@start+Align_l@subject@range@width-1),txt,substr(raw_fa,Align_r@subject@range@start,nchar(raw_fa))))
 
     }
 
 
-    if(nchar(txt)!=0&nchar(seq_txt)>=nchar(vntr)){
+    if(nchar(txt)!=0&nchar(seq_txt)>=nchar(vntr)&nchar(seq_txt)<=nchar(vntr)*100){
 
       if(nchar(vntr)==1){
         vntr_align[[i]] <- txt
-        start_pos[i] <- Align_l@subject@range@start+Align_l@subject@range@width-1+a
+        start_pos[i] <- fl_l$start+fl_l$width
 
         s1_1 <- txt
         s2_1 <- rep(vntr,nchar(txt))
         TF <- table(factor(strsplit(s1_1,"")[[1]]==strsplit(s2_1,"")[[1]], levels = c("TRUE","FALSE")))
+        vntr_match_norm[i] <- TF["TRUE"]/sum(TF)
         match[i] <- TF["TRUE"]
         mismatch[i] <- TF["FALSE"]
         indel[i] <- 0
@@ -127,6 +237,7 @@ VNTR_sub <- function(data, vntr=vntr,
       }else{
         s1 <- DNAString(txt)
         s2 <- DNAString(vntr_t)
+
         mat <- nucleotideSubstitutionMatrix(match = match_s, mismatch = mismatch_s, baseOnly = F)
         mat[!mat%in%c(match_s,mismatch_s)] <- ifelse(baseonly==T,mismatch_s,match_s)
 
@@ -157,8 +268,9 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
           vntr_align[[i]] <- txt
-          start_pos[i] <- Align_l@subject@range@start+Align_l@subject@range@width-1+a
+          start_pos[i] <- fl_l$start+fl_l$width
           TF <- table(factor(strsplit(s1_1,"")[[1]]==strsplit(s2_1,"")[[1]], levels = c("TRUE","FALSE")))
+          vntr_match_norm[i] <- TF["TRUE"]/sum(TF)
           vntr_loc <- str_locate_all(gsub("-","",as.character(globalAlign@subject)),vntr)[[1]]
           r_start[i] <- str_locate(txt,gsub("-","",s1_1))[1]
           r_end[i] <- str_locate(txt,gsub("-","",s1_1))[2]
@@ -181,7 +293,8 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
     }else{
-      r[i]<- ifelse(Align_l@score>=180&&Align_r@score>=180,NA,0)
+      r[i]<- ifelse(nrow(fl_l)==1&&nrow(fl_r)==1,
+                    ifelse(nchar(seq_txt)>nchar(vntr)*100,NA,0),NA)
       vntr_align[[i]] <- ""
     }
 
@@ -191,23 +304,33 @@ VNTR_sub <- function(data, vntr=vntr,
 
   names(vntr_align) <- names(data)
 
+  #===============
+
+
   out <- data.frame(ID=names(data),r=r,match=match,mismatch=mismatch,
                     indel=indel,score=match*match_s+mismatch*mismatch_s,
-                    start_pos=start_pos)
+                    start_pos=start_pos,
+                    probe_add_l=probe_add_l,probe_add_r=probe_add_r,
+                    count_n=count_n,count_deg=count_deg,count_len=count_len,
+                    vntr_match_norm=vntr_match_norm)
   out$start_pos[out$r==0] <- NA
+  if(length(out$ID[which(out$score<0)])>0){
+    vntr_align[out$ID[which(out$score<0)]]<- ""
+  }
+  out[which(out$score<0|is.na(out$r)),-1] <- NA
 
   if(VNTRoutput==T){
     dir.create("output",showWarnings = F)
     dir.create("output/VNTRCaller",showWarnings = F)
-    write.csv(out,paste0("output/VNTRCaller/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".csv"),row.names = F)
-    seqinr::write.fasta(vntr_align,names(vntr_align), paste0("output/VNTRCaller/VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_"),".fas"))
+    write.csv(out,paste0("output/VNTRCaller/VNTR_listbaseonly_",baseonly,"_flanking",len_fl,"_nt",nt,"_",vntr,".csv"),row.names = F)
+
+    seqinr::write.fasta(vntr_align,names(vntr_align), paste0("output/VNTRCaller/VNTR_listbaseonly_",baseonly,"_flanking",len_fl,"_nt",nt,"_",vntr,".fas"))
   }
 
   list(paste0("VNTR_nt",paste(nt,vntr,"baseonly",baseonly,sep = "_")),out,vntr_align)
+
+
 }
-ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
-
-
 
 
 
@@ -268,11 +391,11 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
-#'
+#' 
 #' The function \code{VNTRcaller} estimates the copy numbers of VNTRs. %% ~~ A
 #' concise (1-5 lines) description of what the function does. ~~
-#'
-#'
+#' 
+#' 
 #' @param data MPXV sequences from a file in FASTA format
 #' @param vntr sequence of the repetitive unit
 #' @param match_s matching weight
@@ -289,25 +412,28 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #' \item{match}{number of matches} \item{mismatch}{number of mismatches}
 #' \item{indel}{number of insertions and deletions (indels)}
 #' \item{score}{alignment score of a VNTR region for a query strain}
-#' \item{start_pos}{starting position of the VNTR region for a query strain} %%
-#' ...
+#' \item{start_pos}{starting position of the VNTR region for a query strain}
+#' \item{count_n}{number of N characters} \item{count_deg}{number of non-ATCGN
+#' characters} \item{count_len}{VNTR region length}
+#' \item{vntr_match_norm}{proportion of number of N characters to VNTR region
+#' length} %% ...
 #' @references %% ~put references to the literature/web site here ~ Yang, H.-C.
 #' et al (2022) Monkeypox genome contains variable number tandem repeats
 #' enabling accurate virus tracking.
-#'
+#' 
 #' Pages H, Aboyoun P, Gentleman R, DebRoy S (2022) \emph{Biostrings: Efficient
 #' manipulation of biological strings}.  R package version 2.64.0.
 #' %%\href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples
-#'
+#' 
 #' ## Read MPXV example sequences from a file in FASTA format.
 #' MPXVseq <- read.fasta(system.file("extdata/MPXV_seq_example.fasta.gz", package = "MPXV"), as.string = T)
-#'
+#' 
 #' ## VNTR
 #' vntr <- c("T","TATGATGGA","AT","ATATACATT")
 #' regionStart <- c(132436,150542,173240,178413)
 #' regionEnd <- c(133216,151501,173320,179244)
-#'
+#' 
 #' ## parameter settings
 #' match_s = 2
 #' mismatch_s = -5
@@ -315,7 +441,7 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #' fseqExtend = 150
 #' VNTRoutput = FALSE
 #' tracker = FALSE
-#'
+#' 
 #' ## computes the copy of the variable number tandem repeats
 #' out <- VNTRcaller(data = MPXVseq, vntr = vntr,
 #'                   regionStart = regionStart, regionEnd = regionEnd,
@@ -323,18 +449,15 @@ ref_fa <- seqinr::read.fasta("inst/extdata/MA001.fasta",as.string = T)
 #'                   baseonly = baseonly, fseqExtend = fseqExtend,
 #'                   VNTRoutput = VNTRoutput,
 #'                   tracker = tracker)
-#'
+#' 
 #' ## For more details about the output of VNTRcaller, please vitsit https://github.com/teresayang/MPXV_VNTR.
-#'
-#'
+#' 
+#' 
 #' @export VNTRcaller
-#' @import Biostrings
-#' @importFrom stringr str_locate_all str_count str_locate
-#' @importFrom seqinr read.fasta
-#' @importFrom utils write.csv
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                        regionStart=regionStart, regionEnd=regionEnd,baseonly = T,
-                       fseqExtend = fseqExtend,VNTRoutput=F,tracker=F){
+                       fseqExtend = fseqExtend,VNTRoutput=F,tracker=F,
+                       len_fl = 25, mis_prop = 0.1){
   if(sum(is.na(as.numeric(c(regionStart,regionEnd))))!=0){
     stop("regionStart or regionEnd should be numeric.")
   }
@@ -352,7 +475,7 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     stop("VNTRoutput should be TRUE or FALSE.")
   }
   out <- list()
-  invisible(sapply(1:length(vntr), function(x) out[[x]] <<-VNTR_sub(data, vntr=vntr[x],regionStart=regionStart[x], regionEnd=regionEnd[x], match_s=match_s, mismatch_s=mismatch_s,baseonly = baseonly,fseqExtend=fseqExtend,VNTRoutput=VNTRoutput)))
+  invisible(sapply(1:length(vntr), function(x) out[[x]] <<-VNTR_sub(data, vntr=vntr[x],regionStart=regionStart[x], regionEnd=regionEnd[x], match_s=match_s, mismatch_s=mismatch_s,baseonly = baseonly,fseqExtend=fseqExtend,VNTRoutput=VNTRoutput,len_fl = len_fl, mis_prop = mis_prop)))
   names(out) <- sapply(1:length(out), function(x)out[[x]][[1]])
 
 
@@ -365,7 +488,7 @@ VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
     colnames(dt)[-1] <- sapply(1:length(names(out)), function(x)paste(strsplit(names(out)[x],"_")[[1]][2:3],collapse  = "_") )
   }
   if(VNTRoutput==T){
-    write.csv(dt,paste0("output/VNTRCaller/VNTR_list",paste("baseonly",baseonly,sep = "_"),".csv"),row.names = F)
+    write.csv(dt,paste0("output/VNTRCaller/VNTR_list",paste("baseonly",baseonly,"flanking",len_fl,sep = "_"),".csv"),row.names = F)
     print(paste0("Calling VNTR is done and the results are saved in ", getwd(), "/output/VNTRCaller"))
   }
   if(tracker==T){

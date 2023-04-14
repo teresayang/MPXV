@@ -53,6 +53,10 @@ considered.}
 \item{indel}{number of insertions and deletions (indels)}
 \item{score}{alignment score of a VNTR region for a query strain}
 \item{start_pos}{starting position of the VNTR region for a query strain}
+\item{count_n}{number of N characters}
+\item{count_deg}{number of non-ATCGN characters}
+\item{count_len}{VNTR region length}
+\item{vntr_match_norm}{proportion of number of N characters to VNTR region length}
 %% ...
 }
 \references{
