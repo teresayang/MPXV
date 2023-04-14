@@ -61,7 +61,7 @@ considered.}
 \item{count_n}{number of N characters}
 \item{count_deg}{number of non-ATCGN characters}
 \item{count_len}{VNTR region length}
-\item{vntr_match_norm}{proportion of number of N characters to VNTR region length}
+\item{vntr_match_norm}{proportion of number of matches to VNTR region length}
 %% ...
 }
 \references{
