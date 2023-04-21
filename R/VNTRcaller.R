@@ -395,6 +395,8 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
 
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -464,7 +466,8 @@ VNTR_sub <- function(data, vntr=vntr,
 #'                   tracker = tracker)
 #'
 #' ## Example 2
-#' MPXVseq <- read.fasta(system.file("extdata/MPXV_MT250197_Singapore.fasta.gz", package = "MPXV"), as.string = T)
+#' MPXVseq <- read.fasta(system.file("extdata/MPXV_MT250197_Singapore.fasta.gz",
+#'             package = "MPXV"), as.string = T)
 #' ## VNTR
 #' vntr <- c("T","TATGATGGA","AT","ATATACATT")
 #' regionStart <- c(132436,150542,173240,178413)
