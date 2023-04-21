@@ -75,6 +75,8 @@ manipulation of biological strings}.  R package version 2.64.0.
 }
 
 \examples{
+## Example 1
+
 ## Read MPXV example sequences from a file in FASTA format.
 MPXVseq <- read.fasta(system.file("extdata/MPXV_seq_example.fasta.gz", package = "MPXV"), as.string = T)
 
@@ -100,6 +102,33 @@ out <- VNTRcaller(data = MPXVseq, vntr = vntr,
                   fseq = fseq, fseqExtend = fseqExtend,
                   VNTRoutput = VNTRoutput,
                   tracker = tracker)
+
+## Example 2
+MPXVseq <- read.fasta(system.file("extdata/MPXV_MT250197_Singapore.fasta.gz", package = "MPXV"), as.string = T)
+## VNTR
+vntr <- c("T","TATGATGGA","AT","ATATACATT")
+regionStart <- c(132436,150542,173240,178413)
+regionEnd <- c(133216,151501,173320,179244)
+
+setwd("G:/Monkeypox/pkg_example")
+## parameter settings
+match_s = 2
+mismatch_s = -5
+baseonly = TRUE
+fseq = 25
+fseqExtend = 150
+VNTRoutput = T
+tracker = T
+
+## computes the copy of the variable number tandem repeats
+out <- VNTRcaller(data = MPXVseq, vntr = vntr,
+                  regionStart = regionStart, regionEnd = regionEnd,
+                  match_s = match_s, mismatch_s=mismatch_s,
+                  baseonly = baseonly,
+                  fseq = fseq, fseqExtend = fseqExtend,
+                  VNTRoutput = VNTRoutput,
+                  tracker = tracker)
+
 
 ## For more details about the output of VNTRcaller, please vitsit https://github.com/teresayang/MPXV_VNTR.
 

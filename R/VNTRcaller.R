@@ -393,6 +393,8 @@ VNTR_sub <- function(data, vntr=vntr,
 
 
 
+
+
 #' Calling Variable Number Tandem Repeats (VNTR) for the genome sequence of
 #' monkeypox virus (MPXV) %% ~~function to do ... ~~
 #'
@@ -433,6 +435,8 @@ VNTR_sub <- function(data, vntr=vntr,
 #' %%\href{https://bioconductor.org/packages/Biostringshttps://bioconductor.org/packages/Biostrings}.
 #' @examples
 #'
+#' ## Example 1
+#'
 #' ## Read MPXV example sequences from a file in FASTA format.
 #' MPXVseq <- read.fasta(system.file("extdata/MPXV_seq_example.fasta.gz", package = "MPXV"), as.string = T)
 #'
@@ -459,14 +463,40 @@ VNTR_sub <- function(data, vntr=vntr,
 #'                   VNTRoutput = VNTRoutput,
 #'                   tracker = tracker)
 #'
+#' ## Example 2
+#' MPXVseq <- read.fasta(system.file("extdata/MPXV_MT250197_Singapore.fasta.gz", package = "MPXV"), as.string = T)
+#' ## VNTR
+#' vntr <- c("T","TATGATGGA","AT","ATATACATT")
+#' regionStart <- c(132436,150542,173240,178413)
+#' regionEnd <- c(133216,151501,173320,179244)
+#'
+#' setwd("G:/Monkeypox/pkg_example")
+#' ## parameter settings
+#' match_s = 2
+#' mismatch_s = -5
+#' baseonly = TRUE
+#' fseq = 25
+#' fseqExtend = 150
+#' VNTRoutput = T
+#' tracker = T
+#'
+#' ## computes the copy of the variable number tandem repeats
+#' out <- VNTRcaller(data = MPXVseq, vntr = vntr,
+#'                   regionStart = regionStart, regionEnd = regionEnd,
+#'                   match_s = match_s, mismatch_s=mismatch_s,
+#'                   baseonly = baseonly,
+#'                   fseq = fseq, fseqExtend = fseqExtend,
+#'                   VNTRoutput = VNTRoutput,
+#'                   tracker = tracker)
+#'
+#'
 #' ## For more details about the output of VNTRcaller, please vitsit https://github.com/teresayang/MPXV_VNTR.
 #'
-#'
-#' @export VNTRcaller
-#' #' @import Biostrings
+#' @import Biostrings
 #' @importFrom stringr str_locate_all str_count str_locate
 #' @importFrom seqinr read.fasta
 #' @importFrom utils write.csv
+#' @export VNTRcaller
 VNTRcaller <- function(data, vntr=vntr, match_s=match_s, mismatch_s=mismatch_s,
                        regionStart=regionStart, regionEnd=regionEnd,baseonly = T,
                        fseqExtend = fseqExtend,VNTRoutput=F,tracker=F,
