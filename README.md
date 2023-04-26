@@ -1,3 +1,8 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
 ## Variable Number Tandem Repeats Analysis
 
 *2022-12-05*
@@ -50,14 +55,22 @@ The table (.csv) includes the following information:
 deletions (indels) 
 6. score: alignment score of a VNTR region for a query strain 
 7. start_pos: starting position of the VNTR region for a query strain
+8. probe_add_l: whether left flanking sequence is extended
+9. probe_add_r: whether rigth flanking sequence is extended
+10. count_n: number of N characters
+11. count_deg: number of non-ATCGN character
+12. count_len: VNTR region length
+13. vntr_match_norm: proportion of number of matches to VNTR region length
 
-|        ID        |  r  | match | mismatch | indel | score | start_pos |
-|:----------------:|:---:|:-----:|:--------:|:-----:|:-----:|:---------:|
-|     ON563414     | 28  |  28   |    0     |   0   |  56   |  133095   |
-| EPI_ISL_13308158 | 19  |  19   |    0     |   0   |  38   |  132741   |
-| EPI_ISL_13889908 | 30  |  30   |    0     |   0   |  60   |  133200   |
-| EPI_ISL_14699911 | 32  |  32   |    0     |   0   |  64   |  133102   |
-| EPI_ISL_14166709 | 20  |  20   |    0     |   0   |  40   |  133080   |
+
+|    ID    | r | match | mismatch | indel | score | start_pos | probe_add_l | probe_add_r | count_n | count_deg | count_len | vntr_match_norm |
+|:--------:|:-:|:-----:|:--------:|:-----:|:-----:|:---------:|:-----------:|:-----------:|:-------:|:---------:|:---------:|:---------------:|
+| MT903346 | 8 |  117  |    19    |   18  |  139  |    4794   |      0      |      0      |    0    |     0     |    128    |      0.8603     |
+| MT903347 | 8 |  117  |    19    |   18  |  139  |    4795   |      0      |      0      |    0    |     0     |    128    |      0.8603     |
+| MT903348 | 8 |  117  |    19    |   18  |  139  |    4795   |      0      |      0      |    0    |     0     |    128    |      0.8603     |
+| MN346690 | 7 |  104  |    12    |   11  |  148  |    4487   |      0      |      0      |    0    |     0     |    111    |      0.8966     |
+| MN346692 | 7 |  104  |    12    |   11  |  148  |    4487   |      0      |      0      |    0    |     0     |    111    |      0.8966     |
+| MN346694 | 7 |  104  |    12    |   11  |  148  |    4487   |      0      |      0      |    0    |     0     |    111    |      0.8966     |
 
 The VNTR region sequence for query strains are shown in FASTA format
 (.fas file).
